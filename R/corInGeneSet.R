@@ -1,0 +1,39 @@
+
+
+#' Evaluate mean correlation between residuals in gene set
+#'
+#' Evaluate mean correlation between residuals in gene set based on results from dream
+#'
+#' @param fit result of differential expression with dream
+#' @param idx indeces or rownames to extract
+#' @param squareCorr compute the mean squared correlation instead
+#'
+#' @import variancePartition
+corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
+
+  if( is.null(fit$residuals) ){
+    stop("fit must be result of dream(..., computeResiduals=TRUE)")
+  }
+
+  # Compute residuals 
+  resid = fit$residuals[idx,,drop=FALSE]
+
+  m = nrow(resid)
+
+  # evaluate correlation between residuals
+  # This is the correlation between test statistics (almost, consider eBayes)
+  C = cor(t(resid))
+
+  if( squareCorr ){
+    # Correlation between squared test statistics
+    # note that the covariance is 2*C^2
+    C = C^2
+  }
+
+  # evaluate mean correlation
+  correlation = mean(C[lower.tri(C)])
+
+  vif = 1 + correlation*(m-1)
+
+  list(vif=vif, correlation=correlation)
+}
