@@ -33,51 +33,6 @@ get_MSigDB = function(cat = c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7"), to
 }
 
 
-#' Load Gene Ontology genesets
-#'
-#' Load Gene Ontology genesets
-#'
-#' @param onto array of categories to load
-#' @param to convert gene names to this type using EnrichmentBrowser::idMap().  See EnrichmentBrowser::idTypes(org="hsa") for valid types
-#'
-#' @details
-#' This function loads the GO gene sets using the packages EnrichmentBrowser and GO.db  It can take a mintute to load because converting gene name type is slow.   
-#'
-#' @return Gene sets stored as GeneSetCollection
-#' @examples
-#' # load GO Biological Progress
-#' gs = get_GeneOntology('BP')
-#' 
-#' # load all gene sets
-#' # gs = get_GeneOntology()
-#' 
-#' @import EnrichmentBrowser GSEABase
-#' @export
-get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL' ){
-
-	gs.list = lapply( onto, function(x){
-			gs <- getGenesets(org="hsa", db="go", return.type='GeneSetCollection', onto=x)
-
-			# Convert gene identifiers from the default Entrez to Ensembl
-			idMap(gs, org = "hsa", from = "ENTREZID", to = to) 
-		})
-
-	# combine gene sets and convert to GeneSetCollection
-	go.gs = GeneSetCollection( do.call(c, gs.list ) )
-
-	# modify gene set names to include description
-	go.gs_mod = lapply( go.gs, function(gs){
-	   setName(gs) = paste0( setName(gs), ': ', description(gs))
-	   gs
-	  } )
-	GeneSetCollection( go.gs_mod )
-}
-
-
-
-
-
-
 
 
 

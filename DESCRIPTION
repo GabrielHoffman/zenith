@@ -40,6 +40,8 @@ Imports:
     GSEABase, 
     msigdbr,
     Rfast,
+    data.table,
+    GO.db,
     progress,
     utils,
     Rdpack,

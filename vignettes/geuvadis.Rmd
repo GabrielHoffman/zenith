@@ -42,7 +42,7 @@ knitr::opts_chunk$set(
 
 
 ## Load and process RNA-seq data
-```{r load, message=FALSE}
+```{r load, message=FALSE, cache=FALSE}
 library(recount)
 library(variancePartition)
 library(edgeR)
@@ -115,7 +115,7 @@ geneInfo = data.frame(rowData(rse))
 #### Confirm sex based on expression
 Plot expression of XIST and UTY  
 We see a clear separation of sex based on XIST from chrX and UTY from chrY.
-```{r plot.sex}
+```{r plot.sex, fig.height=5, fig.width=5}
 # extract ENSEMBL identifies for XIST and UTY
 ens_XIST = geneInfo$gene_id[which(geneInfo$symbol == "XIST")]
 ens_UTY = geneInfo$gene_id[which(geneInfo$symbol == "UTY")]
@@ -141,7 +141,7 @@ fit = eBayes(fit)
 ```{r load.genesets}
 # Load Gene Ontology database 
 go.gs = get_GeneOntology()
-
+   
 # convert from GeneSetCollection to list used by camera and zenith
 geneSets_GO = recodeToList( go.gs )
 ```
@@ -152,10 +152,10 @@ geneSets_GO = recodeToList( go.gs )
 # Map from Ensembl genes in geneSets_GO to 
 # from trimmed Ensembl names from RNA-seq data 
 index = ids2indices( geneSets_GO, trim_ensembl_ids(rownames(fit)))
-
+   
 # filter by size of gene set
 n_genes_in = 10
-index = index[sapply(index, length) > n_genes_in]
+index = index[sapply(index, length) >= n_genes_in]
 
 # Run camera
 dsgn = model.matrix( form, metadata)
@@ -171,12 +171,12 @@ res_zenith = zenith( fit, "sexmale", index)
 
 #### Results from camera
 ```{r ktable.camera}
-res_camera[1:8,] %>% kable %>% kable_styling(full_width = FALSE)  
+res_camera[1:8,] %>% kable %>% kable_styling(full_width = FALSE) 
 ```
 
 #### Results from zenith
 ```{r kable.zenith}
-res_zenith[1:8,] %>% kable %>% kable_styling(full_width = FALSE) 
+res_zenith[1:8,] %>% kable %>% kable_styling(full_width = FALSE)     
 ```
 
 While there is a very slight difference in the results from the methods, this is attributable to the very slight difference in the correlation value computed.  This appears to be due to an numerical issue with `camera`, but values are correct to two digits.   
@@ -189,12 +189,12 @@ abline(0, 1, col="red")
 ## Zenith with squared test statistic
 Using the squared test statistic allows zenith to identify gene sets with both positive and negative effects.  But note that the `Direction` must be interpreted differently here.  `Up` indicates that the square test statistics from genes in the gene set are larger then the background.  Because the test statistics are squared, the effects can be a mix or positive and negative.  Therefore `Up` is the relevant test here.  Conversely, `Down` indicates that the genes in the gene set are __less__ associated with the variable than the background.  So gene sets that are `Down` are not usually of biological interest.
 ```{r zenith_squared}
-res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE) 
+res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE)    
 ```
 
 #### Results from zenith
 ```{r kable.zenith_squared}
-res_zenith2[1:8,] %>% kable %>% kable_styling(full_width = FALSE)  
+res_zenith2[1:20,] %>% kable %>% kable_styling(full_width = FALSE)    
 ```
 
 ## Analysis with MSigDB
@@ -208,14 +208,14 @@ index = ids2indices( recodeToList(gs_msigdb), trim_ensembl_ids(rownames(fit)))
 
 # filter by size of gene set
 n_genes_in = 10
-index = index[sapply(index, length) > n_genes_in]
+index = index[sapply(index, length) >= n_genes_in]
 
  # zenith analysis of MSigDB using square test statistics
 res_zenith_msigdb = zenith( fit, "sexmale", index, squaredStats=TRUE)
 ```
 
 ```{r kable.zenith_squared.msigdb}
-res_zenith_msigdb[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+res_zenith_msigdb[1:20,] %>% kable %>% kable_styling(full_width = FALSE)
 ```
 
 
