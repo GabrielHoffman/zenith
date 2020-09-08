@@ -15,8 +15,8 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 output:
   html_document:
-    toc: false
-    toc_float: false
+    toc: true
+    toc_float: true
 ---
 
 ```{r load, message=FALSE}
@@ -52,6 +52,7 @@ knitr::opts_chunk$set(
 
 # devtools::reload("/Users/gabrielhoffman/workspace/repos/zenith")
 
+# scp geuvadis.html sklar1:/hpc/users/hoffmg01/www/software/zenith
 
 ```
 
@@ -203,6 +204,24 @@ res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE)
 res_zenith2[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
 ```
 
+## Analysis with MSigDB
+```{r MSigDB}
+gs_msigdb = get_MSigDB()
+
+# Map from Ensembl genes in gs_msigdb to 
+# from trimmed Ensembl names from RNA-seq data 
+index = ids2indices( recodeToList(gs_msigdb), trim_ensembl_ids(rownames(fit)))
+
+# filter by size of gene set
+n_genes_in = 10
+index = index[sapply(index, length) > n_genes_in]
+
+res_zenith_msigdb = zenith( fit, "sexmale", index, squaredStats=TRUE)
+```
+
+```{r kable.zenith_squared.msigdb}
+res_zenith_msigdb[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+```
 
 
 

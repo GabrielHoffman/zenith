@@ -10,7 +10,8 @@ zenith(
   index,
   use.ranks = FALSE,
   allow.neg.cor = FALSE,
-  squaredStats = FALSE
+  squaredStats = FALSE,
+  progressbar = TRUE
 )
 }
 \arguments{
@@ -25,12 +26,14 @@ zenith(
 \item{allow.neg.cor}{should reduced variance inflation factors be allowed for negative correlations?}
 
 \item{squaredStats}{Test squared test statstics to identify gene sets with log fold change of mixed sign.}
+
+\item{progressbar}{if TRUE, show progress bar}
 }
 \description{
 Perform gene set analysis on the result of differential expression using linear (mixed) modeling with \code{variancePartition::dream} by considering the correlation between gene expression traits.  This package is a slight modification of \code{limma::camera} to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign.
 }
 \details{
-\code{zenith} gives the same results as `\code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.
+\code{zenith} gives the same results as `\code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.  
 
 For differential expression with dream using linear (mixed) models see Hoffman and Roussos (2020).  For the original camera gene set test see Wu and Smyth (2012).
 }

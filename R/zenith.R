@@ -10,9 +10,10 @@
 #' @param  use.ranks do a rank-based test ('TRUE') or a parametric test ('FALSE')?
 #' @param allow.neg.cor should reduced variance inflation factors be allowed for negative correlations?
 #' @param squaredStats Test squared test statstics to identify gene sets with log fold change of mixed sign.
+#' @param progressbar if TRUE, show progress bar
 #'
 #' @details
-#' \code{zenith} gives the same results as `\code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.
+#' \code{zenith} gives the same results as `\code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.  
 #'
 #' For differential expression with dream using linear (mixed) models see Hoffman and Roussos (2020).  For the original camera gene set test see Wu and Smyth (2012).
 #' 
@@ -22,10 +23,10 @@
 #'   \insertRef{wu2012camera}{zenith}
 #' }
 #' @importFrom Rdpack reprompt
-#' @import limma stats utils methods
+#' @import limma stats utils methods progress
 #'
 #' @export
-zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squaredStats=FALSE ){
+zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squaredStats=FALSE, progressbar=TRUE ){
 
   if( ! is(fit, 'MArrayLM') ){
     stop("fit must be of class MArrayLM from variancePartition::dream")
@@ -66,10 +67,19 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   meanStat <- mean(Stat)
   varStat <- var(Stat)
 
+  # setup progressbar
+  if( progressbar ){
+    pb <- progress_bar$new(
+      format = " [:bar] :percent eta: :eta",
+      clear = FALSE,
+      total = nsets, width= 60)
+    # pb <- txtProgressBar(style=3, max=nsets)
+  }
+
   tab <- matrix(0,nsets,5)
   rownames(tab) <- names(index)
   colnames(tab) <- c("NGenes","Correlation","Down","Up","TwoSided")
-  for (i in 1:nsets) {
+  for (i in 1:nsets) {    
 
     iset <- index[[i]]
     if(is.character(iset)) iset <- which(ID %in% iset)
@@ -99,7 +109,11 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
       tab[i,3] <- pt(two.sample.t,df=df.camera)
       tab[i,4] <- pt(two.sample.t,df=df.camera,lower.tail=FALSE)
     }
+
+    if( progressbar & (i %% 100 == 0) ) pb$update(i/nsets) #setTxtProgressBar(pb, i)
   }
+  if( progressbar ) pb$terminate() #close(pb)
+
   tab[,5] <- 2*pmin(tab[,3],tab[,4])
 
   # New column names (Jan 2013)
@@ -119,6 +133,30 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
   tab
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
