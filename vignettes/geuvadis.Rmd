@@ -139,23 +139,11 @@ fit = eBayes(fit)
 
 #### Load genesets
 ```{r load.genesets}
-# Load Gene Ontology database using EnrichmentBrowser package
-go.gs <- getGenesets(org="hsa", db="go", return.type='GeneSetCollection')
-
-# Convert gene identifiers from the default Entrez to Ensembl
-go.gs = idMap(go.gs, org = "hsa", from = "ENTREZID", to = "ENSEMBL") 
-
-# modify the names of the gene sets to read
-# "GO0000002: mitochondrial genome maintenance"
-# instead of "GO0000002"
-go.gs_mod = lapply( go.gs, function(gs){
-   setName(gs) = paste0( setName(gs), ': ', description(gs))
-   gs
-  } )
-go.gs_mod = GeneSetCollection(go.gs_mod )
+# Load Gene Ontology database 
+go.gs = get_GeneOntology()
 
 # convert from GeneSetCollection to list used by camera and zenith
-geneSets_GO = recodeToList( go.gs_mod )
+geneSets_GO = recodeToList( go.gs )
 ```
 
 
@@ -173,7 +161,7 @@ index = index[sapply(index, length) > n_genes_in]
 dsgn = model.matrix( form, metadata)
 res_camera = camera( vobj, index, dsgn, inter.gene.cor=NA, contrast="sexmale")
 
-# Run zenith
+# Run zenith.  
 # Note that zenith allows analysis of any dream model and 
 # any coefficient or contrast defined in the model. 
 res_zenith = zenith( fit, "sexmale", index)
@@ -183,12 +171,12 @@ res_zenith = zenith( fit, "sexmale", index)
 
 #### Results from camera
 ```{r ktable.camera}
-res_camera[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+res_camera[1:8,] %>% kable %>% kable_styling(full_width = FALSE)  
 ```
 
 #### Results from zenith
 ```{r kable.zenith}
-res_zenith[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+res_zenith[1:8,] %>% kable %>% kable_styling(full_width = FALSE) 
 ```
 
 While there is a very slight difference in the results from the methods, this is attributable to the very slight difference in the correlation value computed.  This appears to be due to an numerical issue with `camera`, but values are correct to two digits.   
@@ -201,12 +189,12 @@ abline(0, 1, col="red")
 ## Zenith with squared test statistic
 Using the squared test statistic allows zenith to identify gene sets with both positive and negative effects.  But note that the `Direction` must be interpreted differently here.  `Up` indicates that the square test statistics from genes in the gene set are larger then the background.  Because the test statistics are squared, the effects can be a mix or positive and negative.  Therefore `Up` is the relevant test here.  Conversely, `Down` indicates that the genes in the gene set are __less__ associated with the variable than the background.  So gene sets that are `Down` are not usually of biological interest.
 ```{r zenith_squared}
-res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE)
+res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE) 
 ```
 
 #### Results from zenith
 ```{r kable.zenith_squared}
-res_zenith2[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+res_zenith2[1:8,] %>% kable %>% kable_styling(full_width = FALSE)  
 ```
 
 ## Analysis with MSigDB
