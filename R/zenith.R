@@ -12,6 +12,7 @@
 #' @param squaredStats Test squared test statstics to identify gene sets with log fold change of mixed sign.
 #'
 #' @details
+#' \code{zenith} gives the same results as `\code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.
 #'
 #' For differential expression with dream using linear (mixed) models see Hoffman and Roussos (2020).  For the original camera gene set test see Wu and Smyth (2012).
 #' 
@@ -32,6 +33,10 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
   if( is.null(fit$residuals) ){
     stop("fit must be result of dream(..., computeResiduals=TRUE)")
+  }
+
+  if( ! (coef %in% colnames(coef(fit))) ){
+    stop("coef must be in colnames(coef(fit))")
   }
 
   # Check index

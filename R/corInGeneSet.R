@@ -33,7 +33,15 @@ corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
   # evaluate mean correlation
   correlation = mean(C[lower.tri(C)])
 
-  vif = 1 + correlation*(m-1)
+  vif = 1 + correlation*(m-1) 
+
+  # if gene set has only 1 gene, correlation will be NAN
+  # and VIF should be set to 1
+  if( is.nan(correlation) ){
+    correlation = NA
+    vif = 1
+  }
+
 
   list(vif=vif, correlation=correlation)
 }

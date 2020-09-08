@@ -1,0 +1,210 @@
+---
+title: "Example usage of zenith on GEUVAIDIS RNA-seq"
+subtitle: "Modeling correlation between genes"
+author:
+- name: "[Gabriel Hoffman](http://gabrielhoffman.github.io)"
+  affiliation: | 
+    Icahn School of Medicine at Mount Sinai, New York
+date: "`r date()`"
+abstract: >
+ Perform gene set analysis on the result of differential expression using linear (mixed) modeling with dream by considering the correlation between gene expression traits.  This package is a slight modification of limma::camera to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign.
+vignette: >
+  %\VignetteIndexEntry{Example usage of zenith on GEUVAIDIS RNA-seq}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\usepackage[utf8]{inputenc}
+output:
+  html_document:
+    toc: false
+    toc_float: false
+---
+
+```{r load, message=FALSE}
+library(recount)
+library(variancePartition)
+library(edgeR)
+library(limma)
+library(zenith)
+library(ggplot2)
+library(EnrichmentBrowser)
+library(GSEABase)
+library(dplyr)
+library(kableExtra)
+
+# For ENSEMBL id ENSG00000279457.4, return ENSG00000279457
+trim_ensembl_ids = function(x){
+  gsub("(.*)\\.(.*)", "\\1", x) 
+}
+```
+
+```{r knitr.setup, echo=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning=FALSE,
+  message=FALSE,
+  error = FALSE,
+  tidy = FALSE,
+  cache = TRUE)
+
+
+# rmarkdown::render("geuvadis.Rmd")
+
+
+# devtools::reload("/Users/gabrielhoffman/workspace/repos/zenith")
+
+
+```
+
+### Load RNA-seq data and sample metadata
+```{r download}
+# Download GEUVADIS data from recount2
+if( ! file.exists("ERP001942/rse_gene.Rdata") ){
+  download_study('ERP001942')
+}
+
+# Load the data
+load(file.path('ERP001942', 'rse_gene.Rdata'))
+
+# scale counts
+rse <- scale_counts(rse_gene)
+
+# get count data
+geneCounts = assay(rse)
+
+# read and format metadata
+info = read.table("https://www.ebi.ac.uk/arrayexpress/files/E-GEUV-1/E-GEUV-1.sdrf.txt", header=TRUE, sep="\t")
+colnames(info) = gsub("Comment\\.", "", colnames(info))
+colnames(info) = gsub("Characteristics\\.", "", colnames(info))
+colnames(info) = gsub("\\.$", "", colnames(info))
+
+# extract unique samples and drop a problematic sample
+info = unique(info[,!colnames(info) %in% c('Scan.Name', 'SUBMITTED_FILE_NAME', 'FASTQ_URI')])
+info = info[info$ENA_RUN != 'ERR188328',]
+
+# merge sample information in colData(rse) and info
+metadata = merge(colData(rse), info, by.x="run", by.y='ENA_RUN')
+metadata = data.frame(metadata)
+rownames(metadata) = metadata$run
+
+# keep RNA-seq samples in metadata
+geneCounts = geneCounts[,colnames(geneCounts) %in% metadata$run]
+geneCounts = geneCounts[,match(metadata$run, colnames(geneCounts))]
+```
+
+#### RNA-seq processing
+```{r processing}
+# keep only expressed genes
+isexpr = rowSums(cpm(geneCounts)>1) >= 0.2*ncol(geneCounts)
+
+# apply TMM normalization
+dge = DGEList( geneCounts[isexpr,] )
+dge = calcNormFactors(dge)
+
+# Create log2 counts per million for plotting
+geneExpr = cpm(dge, log=TRUE)
+
+# extract gene annotations
+geneInfo = data.frame(rowData(rse))
+```
+
+#### Plot expression of XIST and UTY  
+We see a clear separation of sex based on XIST from chrX and UTY from chrY.
+```{r plot.sex}
+# extract ENSEMBL identifies for XIST and UTY
+ens_XIST = geneInfo$gene_id[which(geneInfo$symbol == "XIST")]
+ens_UTY = geneInfo$gene_id[which(geneInfo$symbol == "UTY")]
+
+df = data.frame(metadata, XIST= geneExpr[ens_XIST,],
+        UTY = geneExpr[ens_UTY,])
+
+ggplot(df, aes(XIST, UTY, color=sex)) + geom_point() + theme_bw() + theme(aspect.ratio=1) + scale_color_manual(values = c("red", "blue"))
+```
+
+
+
+#### Differential expression with `dream`
+```{r diffExpr, fig.height=5, fig.width=5}
+form = ~ sex + ancestry.category + laboratory
+vobj = voomWithDreamWeights(dge, form, metadata, plot=TRUE)
+
+fit = dream(vobj, form, metadata, computeResiduals=TRUE)
+fit = eBayes(fit)
+```
+
+#### Load genesets
+```{r load.genesets}
+# Load Gene Ontology database using EnrichmentBrowser package
+go.gs <- getGenesets(org="hsa", db="go", return.type='GeneSetCollection')
+
+# Convert gene identifiers from the default Entrez to Ensembl
+go.gs = idMap(go.gs, org = "hsa", from = "ENTREZID", to = "ENSEMBL") 
+
+# modify the names of the gene sets to read
+# "GO0000002: mitochondrial genome maintenance"
+# instead of "GO0000002"
+go.gs_mod = lapply( go.gs, function(gs){
+   setName(gs) = paste0( setName(gs), ': ', description(gs))
+   gs
+  } )
+go.gs_mod = GeneSetCollection(go.gs_mod )
+
+# convert from GeneSetCollection to list used by camera and zenith
+geneSets_GO = recodeToList( go.gs_mod )
+```
+
+
+#### Run gene set analysis with zenith
+```{r zenith}
+# Map from Ensembl genes in geneSets_GO to 
+# from trimmed Ensembl names from RNA-seq data 
+index = ids2indices( geneSets_GO, trim_ensembl_ids(rownames(fit)))
+
+# filter by size of gene set
+n_genes_in = 10
+index = index[sapply(index, length) > n_genes_in]
+
+# Run camera
+dsgn = model.matrix( form, metadata)
+res_camera = camera( vobj, index, dsgn, inter.gene.cor=NA, contrast="sexmale")
+
+# Run zenith
+# Note that zenith allows analysis of any dream model and 
+# any coefficient or contrast defined in the model. 
+res_zenith = zenith( fit, "sexmale", index)
+```
+
+### Compare results
+
+#### Results from camera
+```{r ktable.camera}
+res_camera[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+```
+
+#### Results from zenith
+```{r kable.zenith}
+res_zenith[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+```
+
+While there is a very slight difference in the results from the methods, this is attributable to the very slight difference in the correlation value computed.  This appears to be due to an numerical issue with `camera`, but values are correct to two digits.   
+```{r compare, fig.height=5, fig.width=5}
+df = merge(res_camera, res_zenith, by="row.names")
+plot(df$Correlation.x, df$Correlation.y, xlab="Correlation from zenith", ylab="Correlation from camera")
+abline(0, 1, col="red")
+```
+
+### Zenith can also test for differences in the squared test statistic
+But note that the `Direction` must be interpreted differently here.  `Up` indicates that the square test statistics from genes in the gene set are larger then the background.  Because the test statistics are squared, the effects can be a mix or positive and negative.  Therefore `Up` is the relevant test here.  Conversely, `Down` indicates that the genes in the gene set are __less__ associated with the variable than the background.  So gene sets that are `Down` are not usually of biological interest.
+```{r zenith_squared}
+res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE)
+```
+
+#### Results from zenith
+```{r kable.zenith_squared}
+res_zenith2[1:8,] %>% kable %>% kable_styling(full_width = FALSE)
+```
+
+
+
+
+
+
