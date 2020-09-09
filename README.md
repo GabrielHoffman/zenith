@@ -5,7 +5,7 @@
 
 ## Install
 
-````
+```
 git clone https://github.com/GabrielHoffman/zenith.git
 R CMD INSTALL zenith
 ```
