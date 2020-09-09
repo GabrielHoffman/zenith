@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_GeneOntology.R
 \name{aggrgate_GO_offspring}
 \alias{aggrgate_GO_offspring}
-\title{Include GO offspring genesets and genes}
+\title{Aggregate GO offspring genesets and genes}
 \usage{
 aggrgate_GO_offspring(gs.GO)
 }

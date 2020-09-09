@@ -27,7 +27,7 @@ Load Gene Ontology genesets
 This function loads the GO gene sets using the packages EnrichmentBrowser and GO.db  It can take a mintute to load because converting gene name type is slow.
 }
 \examples{
-# load GO Biological Progress
+# load GO Biological Process
 gs = get_GeneOntology('BP')
 
 # load all gene sets

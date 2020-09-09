@@ -44,12 +44,17 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   if(!is.list(index)) index <- list(set1=index)
   nsets <- length(index)
   if(nsets==0L) stop("index is empty")
+
+  # order gene sets from largest to smallest
+  # this make time estimate more accurate
+  # index = index[order(sapply(index, length),decreasing=TRUE)]
   
   # extract test statistics
   Stat = topTable(fit, coef, number=Inf, sort.by="none")$t
 
   if( ! use.ranks ){
-    Stat <- zscoreT( Stat, df= fit$df.total[1], approx=TRUE, method="hill")
+    df = ifelse( !is.null(fit$df.total[1]), fit$df.total[1], Inf)
+    Stat <- zscoreT( Stat, df=df, approx=TRUE, method="hill")
   }
 
   # use squared test statistics
@@ -69,17 +74,20 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
   # setup progressbar
   if( progressbar ){
+    # since time is quadratic in the size of the gene set
+    total_work = sum(sapply(index, length)^2)
+
     pb <- progress_bar$new(
       format = " [:bar] :percent eta: :eta",
       clear = FALSE,
-      total = nsets, width= 60)
-    # pb <- txtProgressBar(style=3, max=nsets)
+      total = total_work, width = 60)
   }
+  cumulative_work = 0
 
   tab <- matrix(0,nsets,5)
   rownames(tab) <- names(index)
   colnames(tab) <- c("NGenes","Correlation","Down","Up","TwoSided")
-  for (i in 1:nsets) {    
+  for(i in 1:nsets){    
 
     iset <- index[[i]]
     if(is.character(iset)) iset <- which(ID %in% iset)
@@ -88,6 +96,8 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
     m <- length(StatInSet)
     m2 <- G-m
+
+    cumulative_work = cumulative_work + m^2
 
     # Compute correlation within geneset
     res = corInGeneSet( fit, iset, squaredStats)
@@ -110,9 +120,12 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
       tab[i,4] <- pt(two.sample.t,df=df.camera,lower.tail=FALSE)
     }
 
-    if( progressbar & (i %% 100 == 0) ) pb$update(i/nsets) #setTxtProgressBar(pb, i)
+    if( progressbar & (i %% 100 == 0) ) pb$update( cumulative_work / total_work )
   }
-  if( progressbar ) pb$terminate() #close(pb)
+  if( progressbar ){
+    pb$update( 1.0 )
+    pb$terminate() 
+  }
 
   tab[,5] <- 2*pmin(tab[,3],tab[,4])
 
