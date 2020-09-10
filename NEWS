@@ -1,4 +1,8 @@
 
+# Version 0.99.4
+################
+	o zenith uses t statistical for fixed effect models and z.std for mixed effects
+
 # Version 0.99.3
 ################
 	o zenith now works when dream uses random effects

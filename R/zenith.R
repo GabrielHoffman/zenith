@@ -49,12 +49,18 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   # this make time estimate more accurate
   # index = index[order(sapply(index, length),decreasing=TRUE)]
   
-  # extract test statistics
-  Stat = topTable(fit, coef, number=Inf, sort.by="none")$t
+  if( fit$method == "lm"){
 
-  if( ! use.ranks ){
-    df = ifelse( !is.null(fit$df.total[1]), fit$df.total[1], Inf)
-    Stat <- zscoreT( Stat, df=df, approx=TRUE, method="hill")
+    # extract test statistics
+    Stat = topTable(fit, coef, number=Inf, sort.by="none")$t
+
+    if( ! use.ranks ){
+      df = fit$df.total[1]
+      Stat <- zscoreT( Stat, df=df, approx=TRUE, method="hill")
+    }
+  }else if( fit$method == "lmer"){
+    # extract test statistics
+    Stat = topTable(fit, coef, number=Inf, sort.by="none")$z.std
   }
 
   # use squared test statistics
