@@ -1,7 +1,7 @@
 Package: zenith
 Type: Package
 Title: Gene set analysis following differential expression using linear (mixed) modeling with dream
-Version: 0.99.5
+Version: 0.99.6
 Date: 2020-09-11
 Author: Gabriel E. Hoffman
 Maintainer: Gabriel E. Hoffman <gabriel.hoffman@mssm.edu>

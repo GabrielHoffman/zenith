@@ -1,3 +1,7 @@
+# Version 0.99.6
+################
+	o zenith() now returns effect size and standard error
+	o if squaredStats==TRUE, return PValue = p.greater
 
 # Version 0.99.5
 ################

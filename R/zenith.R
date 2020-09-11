@@ -90,12 +90,12 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
       clear = FALSE,
       total = total_work, width = 60)
   }
-  cumulative_work = 0
+  cumulative_work = cumsum(sapply(index, length)^2)
 
-  tab <- matrix(0,nsets,5)
-  rownames(tab) <- names(index)
-  colnames(tab) <- c("NGenes","Correlation","Down","Up","TwoSided")
-  for(i in 1:nsets){    
+  # tab <- matrix(0,nsets,5)
+  # rownames(tab) <- names(index)
+  # colnames(tab) <- c("NGenes","Correlation","Down","Up","TwoSided")
+  tab = lapply(seq_len(nsets), function(i){    
 
     iset <- index[[i]]
     if(is.character(iset)) iset <- which(ID %in% iset)
@@ -105,48 +105,84 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
     m <- length(StatInSet)
     m2 <- G-m
 
-    cumulative_work = cumulative_work + m^2
+    # cumulative_work <<- cumulative_work + m^2
 
     # Compute correlation within geneset
     res = corInGeneSet( fit, iset, squaredStats)
     correlation = res$correlation
     vif = res$vif
 
-    tab[i,1] <- m
-    tab[i,2] <- correlation
+    # tab[i,1] <- m
+    # tab[i,2] <- correlation
 
     if(use.ranks) {
-      if(!allow.neg.cor) correlation <- max(0,correlation)
-      tab[i,3:4] <- rankSumTestWithCorrelation(iset,statistics=Stat,correlation=correlation,df=df.camera)
-    }else{  
-      if(!allow.neg.cor) vif <- max(1,vif)
+
+      corr.use = correlation
+      if( ! allow.neg.cor ) corr.use <- max(0,corr.use)
+
+      res = .rankSumTestWithCorrelation(iset, statistics=Stat, correlation=corr.use, df=df.camera)
+
+      df = data.frame(  NGenes      = m,
+                        Correlation = correlation,
+                        delta       = res$effect,
+                        se          = res$se,
+                        p.less      = res$less,
+                        p.greater   = res$greater )
+    }else{ 
+
+      if( ! allow.neg.cor ) vif <- max(1,vif)
+
       meanStatInSet <- mean(StatInSet)
       delta <- G/m2*(meanStatInSet-meanStat)
       varStatPooled <- ( (G-1)*varStat - delta^2*m*m2/G ) / (G-2)
-      two.sample.t <- delta / sqrt( varStatPooled * (vif/m + 1/m2) )
-      tab[i,3] <- pt(two.sample.t,df=df.camera)
-      tab[i,4] <- pt(two.sample.t,df=df.camera,lower.tail=FALSE)
+      delta.se = sqrt( varStatPooled * (vif/m + 1/m2) )
+      two.sample.t = delta / delta.se
+
+      # two.sample.t <- delta / sqrt( varStatPooled * (vif/m + 1/m2) )
+      # tab[i,3] <- pt(two.sample.t,df=df.camera)
+      # tab[i,4] <- pt(two.sample.t,df=df.camera,lower.tail=FALSE)
+
+      df = data.frame(NGenes      = m,
+                      Correlation = correlation,
+                      delta       = delta,
+                      se          = delta.se,
+                      p.less      = pt(two.sample.t,df=df.camera),
+                      p.greater   = pt(two.sample.t,df=df.camera,lower.tail=FALSE) )
     }
 
-    if( progressbar & (i %% 100 == 0) ) pb$update( cumulative_work / total_work )
+    if( progressbar & (i %% 100 == 0) ) pb$update( cumulative_work[i] / total_work )
+
+    df 
+  })
+  tab = do.call(rbind, tab)
+  rownames(tab) <- names(index)
+
+  # p-value for two sided test
+  if( squaredStats ){
+    tab$PValue = tab$p.greater
+    tab$Direction = "Up"
+  }else{    
+    tab$PValue = 2*pmin(tab$p.less, tab$p.greater)
+    tab$Direction = ifelse(tab$p.less < tab$p.greater, "Down", "Up")
   }
+
   if( progressbar ){
     pb$update( 1.0 )
     pb$terminate() 
   }
 
-  tab[,5] <- 2*pmin(tab[,3],tab[,4])
+  # tab[,5] <- 2*pmin(tab[,3],tab[,4])
 
-  # New column names (Jan 2013)
-  tab <- data.frame(tab,stringsAsFactors=FALSE)
-  Direction <- rep_len("Up",length.out=nsets)
-  Direction[tab$Down < tab$Up] <- "Down"
-  tab$Direction <- Direction
-  tab$PValue <- tab$TwoSided
-  tab$Down <- tab$Up <- tab$TwoSided <- NULL
+  # # New column names (Jan 2013)
+  # tab <- data.frame(tab,stringsAsFactors=FALSE)
+  # Direction <- rep_len("Up",length.out=nsets)
+  # Direction[tab$Down < tab$Up] <- "Down"
+  # tab$Direction <- Direction
+  # tab$PValue <- tab$TwoSided
+  # tab$Down <- tab$Up <- tab$TwoSided <- NULL
 
-  # Add FDR
-  if(nsets>1) tab$FDR <- p.adjust(tab$PValue,method="BH")
+  # # Add FDR
+  # if(nsets>1) tab$FDR <- p.adjust(tab$PValue,method="BH")
 
   # Sort by p-value
   o <- order(tab$PValue)
@@ -158,10 +194,50 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
 
 
-
-
-
-
+#' Two Sample Wilcoxon-Mann-Whitney Rank Sum Test Allowing For Correlation
+#' 
+#' Same as \code{limma::.rankSumTestWithCorrelation}, but returns effect size.
+#'
+#' @param index any index vector such that 'statistics[index]' contains the values of the statistic for the test group.
+#' @param statistics numeric vector giving values of the test statistic.
+#' @param correlation numeric scalar, average correlation between cases in the test group.  Cases in the second group are assumed independent of each other and other the first group.
+#' @param df degrees of freedom which the correlation has been estimated.
+#'
+#' @details See \code{limma::.rankSumTestWithCorrelation}
+#'
+.rankSumTestWithCorrelation = function (index, statistics, correlation = 0, df = Inf){
+    n <- length(statistics)
+    r <- rank(statistics)
+    r1 <- r[index]
+    n1 <- length(r1)
+    n2 <- n - n1
+    U <- n1 * n2 + n1 * (n1 + 1)/2 - sum(r1)
+    mu <- n1 * n2/2
+    if (correlation == 0 || n1 == 1) {
+        sigma2 <- n1 * n2 * (n + 1)/12
+    }
+    else {
+        sigma2 <- asin(1) * n1 * n2 + asin(0.5) * n1 * n2 * (n2 - 
+            1) + asin(correlation/2) * n1 * (n1 - 1) * n2 * (n2 - 
+            1) + asin((correlation + 1)/2) * n1 * (n1 - 1) * 
+            n2
+        sigma2 <- sigma2/2/pi
+    }
+    TIES <- (length(r) != length(unique(r)))
+    if (TIES) {
+        NTIES <- table(r)
+        adjustment <- sum(NTIES * (NTIES + 1) * (NTIES - 1))/(n * 
+            (n + 1) * (n - 1))
+        sigma2 <- sigma2 * (1 - adjustment)
+    }
+    zlowertail <- (U + 0.5 - mu)/sqrt(sigma2)
+    zuppertail <- (U - 0.5 - mu)/sqrt(sigma2)
+    
+    data.frame( effect  = -1*(U - mu), 
+                se      = sqrt(sigma2),
+                less    = pt(zuppertail, df = df, lower.tail = FALSE), 
+                greater = pt(zlowertail, df = df))
+}
 
 
 

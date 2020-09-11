@@ -67,13 +67,16 @@ test_zenith = function(){
 	res1 = camera(y, lst, design, inter.gene.cor=NA)
 	res2 = zenith( fit, "Group", lst)
 
-	test1 = checkEquals(res1, res2)
+	# only check columns in collon
+	cols = colnames(res1)[1:4]
+
+	test1 = checkEquals(res1[,cols], res2[,cols])
 
 	# Non-parametric test
 	res1 = camera(y, lst, design, inter.gene.cor=NA, use.ranks=TRUE)
 	res2 = zenith( fit, "Group", lst, use.ranks=TRUE)
 
-	test2 = checkEquals(res1, res2)
+	test2 = checkEquals(res1[,cols], res2[,cols])
 
 	test1 & test2
 }
