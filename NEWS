@@ -1,4 +1,8 @@
 
+# Version 0.99.5
+################
+	o Fix small error caused by fit$method
+
 # Version 0.99.4
 ################
 	o zenith uses t statistical for fixed effect models and z.std for mixed effects

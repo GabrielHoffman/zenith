@@ -49,7 +49,7 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   # this make time estimate more accurate
   # index = index[order(sapply(index, length),decreasing=TRUE)]
   
-  if( fit$method == "lm"){
+  if( fit$method == "ls" ){
 
     # extract test statistics
     Stat = topTable(fit, coef, number=Inf, sort.by="none")$t
@@ -61,6 +61,8 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   }else if( fit$method == "lmer"){
     # extract test statistics
     Stat = topTable(fit, coef, number=Inf, sort.by="none")$z.std
+  }else{
+    stop("Model method must be either 'ls' or 'lmer'")
   }
 
   # use squared test statistics
