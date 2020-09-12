@@ -67,8 +67,8 @@ test_zenith = function(){
 	res1 = camera(y, lst, design, inter.gene.cor=NA)
 	res2 = zenith( fit, "Group", lst)
 
-	# only check columns in collon
-	cols = colnames(res1)[1:4]
+	# only check columns in common
+	cols = colnames(res1)[1:5]
 
 	test1 = checkEquals(res1[,cols], res2[,cols])
 

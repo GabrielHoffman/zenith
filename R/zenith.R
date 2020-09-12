@@ -166,6 +166,8 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
     tab$Direction = ifelse(tab$p.less < tab$p.greater, "Down", "Up")
   }
 
+  tab$FDR = p.adjust(tab$PValue, "BH")
+
   if( progressbar ){
     pb$update( 1.0 )
     pb$terminate() 
