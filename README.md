@@ -11,6 +11,5 @@ Perform gene set analysis on the result of differential expression using linear 
 ## Install
 
 ```
-git clone https://github.com/GabrielHoffman/zenith.git
-R CMD INSTALL zenith
+devtools::install_github("GabrielHoffman/zenith")
 ```
