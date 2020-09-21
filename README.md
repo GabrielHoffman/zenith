@@ -10,6 +10,6 @@ Perform gene set analysis on the result of differential expression using linear 
 
 ## Install
 
-```
+```r
 devtools::install_github("GabrielHoffman/zenith")
 ```
