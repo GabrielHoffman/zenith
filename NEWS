@@ -1,6 +1,6 @@
 # Version 0.99.8
 ################
-	o Much fastering loading of cached gene sets
+	o Much faster loading of cached gene sets
 	o enforce: 
 	    - variancePartition (>= 1.19.16)
 	    - EnrichmentBrowser (>= 2.19.13)
