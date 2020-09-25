@@ -24,20 +24,15 @@
 get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL', includeOffspring=TRUE ){
 
 	gs.list = lapply( onto, function(x){
-		getGenesets(org="hsa", db="go", return.type='GeneSetCollection', onto=x)
+		getGenesets(org="hsa", db="go", gene.id.type = to, return.type='GeneSetCollection', onto=x)
 		})
 
 	# combine gene sets and convert to GeneSetCollection
 	gs.go = GeneSetCollection( do.call(c,gs.list) )
 
-	# Convert gene identifiers from the default Entrez to Ensembl
-	gs.go = idMap(gs.go, org = "hsa", from = "ENTREZID", to = to) 
-
-	# summary(sapply(geneIds(gs.go), length))
-
 	if( includeOffspring ){
 		# follow the GO hierarchy down and include all genes in offspring sets for a given gene set
-		gs.go = aggrgate_GO_offspring( gs.go )
+		gs.go = aggregate_GO_offspring( gs.go )
 	}
 
 	# summary(sapply(geneIds(gs.go), length))
@@ -61,7 +56,11 @@ get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL', include
 #'
 #' @import EnrichmentBrowser GSEABase GO.db data.table
 #'
-aggrgate_GO_offspring = function( gs.GO ){
+aggregate_GO_offspring = function( gs.GO ){
+
+	if( ! is(gs.GO, 'GeneSetCollection') ){
+		stop("gsGO must be a GeneSetCollection")
+	}
 
 	# create a data.table of gene set names vs index for fast searching
 	dt = data.table(GOID = gsub("GO", "GO:", names(gs.GO)), idx = seq_len(length(gs.GO)))

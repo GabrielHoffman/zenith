@@ -45,9 +45,10 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   nsets <- length(index)
   if(nsets==0L) stop("index is empty")
 
-  # order gene sets from largest to smallest
-  # this make time estimate more accurate
-  # index = index[order(sapply(index, length),decreasing=TRUE)]
+  # Only keep residuals for genes present in the main part of fit
+  # Currently fit[1:10,] subsets objects in a standard MArrayLM
+  #   but residuals is not standard, so it is not subsetted
+  fit$residuals = fit$residuals[rownames(fit),,drop=FALSE]
   
   if( fit$method == "ls" ){
 

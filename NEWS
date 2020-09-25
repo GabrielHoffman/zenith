@@ -1,3 +1,14 @@
+# Version 0.99.8
+################
+	o Much fastering loading of cached gene sets
+	o enforce: 
+	    - variancePartition (>= 1.19.16)
+	    - EnrichmentBrowser (>= 2.19.13)
+
+# Version 0.99.7
+################
+	o Enforce subsetting of residuals from MArrayLM
+
 # Version 0.99.6
 ################
 	o zenith() now returns effect size and standard error

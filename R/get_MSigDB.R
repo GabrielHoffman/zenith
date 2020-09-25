@@ -22,10 +22,8 @@
 get_MSigDB = function(cat = c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7"), to = "ENSEMBL"){
 
 	gs.list = lapply( cat, function(x){
-		gs <- getGenesets(org="hsa", db="msigdb", return.type='GeneSetCollection', cat=x, subcat=NA)
-
-		# Convert gene identifiers from the default Entrez to Ensembl
-		idMap(gs, org = "hsa", from = "ENTREZID", to = to) 
+		# get gene sets and convert to gene.id.type "to"
+		getGenesets(org="hsa", db="msigdb", gene.id.type = to, return.type='GeneSetCollection', cat=x, subcat=NA)
 	})
 
 	# combine gene sets and convert to GeneSetCollection

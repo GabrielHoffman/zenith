@@ -1,8 +1,8 @@
 Package: zenith
 Type: Package
 Title: Gene set analysis following differential expression using linear (mixed) modeling with dream
-Version: 0.99.6
-Date: 2020-09-11
+Version: 0.99.8
+Date: 2020-09-25
 Author: Gabriel E. Hoffman
 Maintainer: Gabriel E. Hoffman <gabriel.hoffman@mssm.edu>
 Description: Perform gene set analysis on the result of differential expression using linear (mixed) modeling with dream by considering the correlation between gene expression traits.  This package is a slight modification of limma::camera to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign.
@@ -31,12 +31,12 @@ biocViews:
     ImmunoOncology,
     Software
 Depends:
-    R (>= 3.6.0),
+    R (>= 4.0.0),
     methods
 Imports:
-    variancePartition,
+    variancePartition (>= 1.19.16),
     limma,
-    EnrichmentBrowser,
+    EnrichmentBrowser (>= 2.19.13),
     GSEABase, 
     msigdbr,
     Rfast,

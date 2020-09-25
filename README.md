@@ -11,5 +11,13 @@ Perform gene set analysis on the result of differential expression using linear 
 ## Install
 
 ```r
-devtools::install_github("GabrielHoffman/zenith")
+library(devtools)
+
+# install EnrichmentBrowser >= v2.19.13
+install_github("lgeistlinger/EnrichmentBrowser")
+
+# install variancePartition >= v1.19.16
+install_github("GabrielHoffman/variancePartition")
+
+install_github("GabrielHoffman/zenith")
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Zenith gene set testing after dream analysis"
+title: "[Zenith](https://github.com/GabrielHoffman/zenith) gene set testing after dream analysis"
 subtitle: "Zenith controls the false positive rate while retaining power"
 author:
 - name: "[Gabriel Hoffman](http://gabrielhoffman.github.io)"
@@ -7,7 +7,7 @@ author:
     Icahn School of Medicine at Mount Sinai, New York
 date: "`r date()`"
 abstract: >
- Perform gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/btaa687) by considering the correlation between gene expression traits.  Zenith performs competitive gene sets analysis by comparing the tests statistics from genes in a  gene set to the rest of the genes not in the set while modeling correlation between genes in the set.  This package is a slight modification of [limma::camera](https://doi.org/10.1093/nar/gks461) to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign by using the squared test statistic.  
+ Perform gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/btaa687) by considering the correlation between gene expression traits.  [Zenith](https://github.com/GabrielHoffman/zenith) performs competitive gene sets analysis by comparing the tests statistics from genes in a  gene set to the rest of the genes not in the set while modeling correlation between genes in the set.  This package is a slight modification of [limma::camera](https://doi.org/10.1093/nar/gks461) to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign by using the squared test statistic.  
 vignette: >
   %\VignetteIndexEntry{Example usage of zenith on GEUVAIDIS RNA-seq}
   %\VignetteEngine{knitr::rmarkdown}
