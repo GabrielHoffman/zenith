@@ -44,7 +44,6 @@ corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
     vif = 1
   }
 
-
   list(vif=vif, correlation=correlation)
 }
 

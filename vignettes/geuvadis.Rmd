@@ -218,6 +218,132 @@ res_zenith_msigdb = zenith( fit, "sexmale", index, squaredStats=TRUE)
 res_zenith_msigdb[1:20,] %>% kable %>% kable_styling(full_width = FALSE)
 ```
 
+#### Zenith controls the false positive rate 
+```{r testnull}
+
+set.seed(1)
+# simulate random variable
+metadata$rnd = rnorm(nrow(metadata))
+
+# fit dream model
+form = ~ sex + ancestry.category + laboratory + rnd
+
+fit = dream(vobj, form, metadata, computeResiduals=TRUE)
+fit = eBayes(fit)
+
+# fit zenith model, testing the coefficent "rnd"
+res_zenith = zenith( fit, "rnd", index)
+
+# fit zenith model for squared statistics, testing the coefficent "rnd"
+res_zenith_sq = zenith( fit, "rnd", index, squaredStats=TRUE)
+```
+
+index = lapply( 1:2000, function(x){
+  sample.int(nrow(fit), 100)
+  })
+names(index) = paste0("gs_", 1:length(index))
+
+res1 = zenith( fit, "rnd", index, use.ranks=FALSE, allow.neg.cor=TRUE)
+
+# fit zenith model for squared statistics, testing the coefficent "rnd"
+res2 = zenith( fit, "rnd", index, squaredStats=TRUE, use.ranks=FALSE, allow.neg.cor=TRUE)
+
+res3 = cameraPR( topTable(fit, "rnd", sort.by="none", number=Inf)$t, index, inter.gene.cor=0.2)
+
+sum(res1$PValue < 0.05) / nrow(res1)
+sum(res2$PValue < 0.05) / nrow(res2)
+sum(res3$PValue < 0.05) / nrow(res3)
+
+
+par(mfrow=c(1,4))
+hist(res1$Correlation)
+hist(res1$PValue)
+hist(res1$p.less)
+hist(res1$p.greater)
+
+
+hist(res2$Correlation)
+hist(res2$PValue)
+hist(res2$p.less)
+hist(res2$p.greater)
+
+
+# hist(res2$delta) 
+hist(res3$PValue, main="CameraPR")
+hist( 2*pmin(res2[names(index),]$p.less, res2[names(index),]$p.greater), main="Two sided zenith" )
+
+
+plot(res3[names(index),]$PValue, 2*pmin(res2[names(index),]$p.less, res2[names(index),]$p.greater))
+
+
+cameraPR( topTable(fit, "rnd", sort.by="none", number=Inf)$t^2, index[760], inter.gene.cor=0.002167243)
+
+Stat = topTable(fit, "rnd", sort.by="none", number=Inf)$t
+
+res = lapply( index, function(iset){
+  zenith:::.rankSumTestWithCorrelation(iset, statistics=Stat^2, correlation=0.8, df=Inf)
+})
+res = do.call(rbind, res)
+
+
+hist(res$less)
+hist(res$greater)
+
+
+
+I have show that 
+1) zenith controls the false positive rate under the null when using random variable in the dream model
+2) You can see in the vignette that the squareStats give much more findings that the up/down analysis: https://hoffmg01.u.hpc.mssm.edu/software/zenith/geuvadis.html
+
+3) The p-values are uniform, when variable is random and there is no correlation structure in the data
+
+
+In my testing experience, t^2 is succesptible to outliers driving the association.
+  I can use abs(t) instead while still using rho^2 to approximate the correlation
+
+# devtools::reload("/Users/gabrielhoffman/workspace/repos/zenith")
+
+
+
+with use.rank = TRUE, statistic is always conservative
+  But centered around 0.5 as corr -> 1
+
+with use.rank = FALSE, delta is affected by outliers and is not symmetric
+  can I used abs(t) instead? since it is less prone to outliers
+
+  if tstats are correlated rho, how are abs(tstats) correlated?
+
+
+library(mvtnorm)
+
+df = lapply(seq(0, 1, length.out=1000), function(rho){
+  C = matrix(rho, 2,2)
+  diag(C) = 1
+  X = rmvnorm(10000, sigma=C)
+
+  data.frame(rho, 
+    rho_hat = cor(X[,1], X[,2]), 
+    rho_sq = cor(X[,1]^2, X[,2]^2), 
+    rho_abs = cor(abs(X[,1]), abs(X[,2])))
+})
+df = do.call(rbind, df)
+
+par(mfrow=c(1,4))
+plot(df$rho, df$rho_hat)
+plot(df$rho, df$rho_sq)
+plot(df$rho, df$rho_abs)
+plot(df$rho_sq, df$rho_abs)
+abline(0, 1, col="red", lwd='2')
+
+rho = seq(0, 1, length.out=1000)
+plot(rho, rho^2 )
+
+
+
+
+
+
+
 
 
 

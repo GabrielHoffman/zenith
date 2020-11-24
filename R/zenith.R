@@ -28,6 +28,10 @@
 #' @export
 zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squaredStats=FALSE, progressbar=TRUE ){
 
+  if( squaredStats ){
+    stop("squaredStats == TRUE is not currently supported")
+  }
+
   if( ! is(fit, 'MArrayLM') ){
     stop("fit must be of class MArrayLM from variancePartition::dream")
   }
@@ -68,7 +72,8 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
   # use squared test statistics
   if( squaredStats ){
-    Stat = Stat^2
+    # Stat = Stat^2
+    Stat = abs(Stat) # testing
   }
 
   # get number of statistics
@@ -113,8 +118,9 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
     correlation = res$correlation
     vif = res$vif
 
-    # tab[i,1] <- m
-    # tab[i,2] <- correlation
+    # test
+    # correlation = 0
+    # vif = 1
 
     if(use.ranks) {
 
@@ -169,7 +175,7 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
 
   tab$FDR = p.adjust(tab$PValue, "BH")
 
-  if( progressbar ){
+  if( progressbar & ! pb$finished){
     pb$update( 1.0 )
     pb$terminate() 
   }
