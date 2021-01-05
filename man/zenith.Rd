@@ -17,11 +17,11 @@ zenith(
 \arguments{
 \item{fit}{result of differential expression with dream}
 
-\item{coef}{coefficient to test using topTable(fit, coef)}
+\item{coef}{coefficient to test using \code{topTable(fit, coef)}}
 
-\item{index}{an index vector or a list of index vectors.  Can be any vector such that 'fit[index,]'  selects the rows corresponding to the test set.  The list can be made using 'ids2indices'.}
+\item{index}{an index vector or a list of index vectors.  Can be any vector such that \code{fit[index,]} selects the rows corresponding to the test set.  The list can be made using \code{ids2indices}.}
 
-\item{use.ranks}{do a rank-based test ('TRUE') or a parametric test ('FALSE')?}
+\item{use.ranks}{do a rank-based test (\code{TRUE}) or a parametric test ('FALSE')?}
 
 \item{allow.neg.cor}{should reduced variance inflation factors be allowed for negative correlations?}
 
@@ -29,13 +29,54 @@ zenith(
 
 \item{progressbar}{if TRUE, show progress bar}
 }
+\value{
+\itemize{
+  \item \code{NGenes}: number of genes in this set
+  \item \code{Correlation}: mean correlation between expression of genes in this set
+  \item \code{delta}: difference in mean t-statistic for genes in this set compared to genes not in this set
+  \item \code{se}: standard error of \code{delta}
+  \item \code{p.less}: p-value for hypothesis test of \code{H0: delta < 0}
+  \item \code{p.greater}: p-value for hypothesis test of \code{H0: delta > 0}
+  \item \code{PValue}:  p-value for hypothesis test \code{H0: delta != 0}
+  \item \code{Direction}: direction of effect based on sign(delta)
+  \item \code{FDR}: false discovery rate based on Benjamini-Hochberg method in \code{p.adjust}
+}
+}
 \description{
 Perform gene set analysis on the result of differential expression using linear (mixed) modeling with \code{variancePartition::dream} by considering the correlation between gene expression traits.  This package is a slight modification of \code{limma::camera} to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign.
 }
 \details{
-\code{zenith} gives the same results as `\code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.  
+\code{zenith} gives the same results as \code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.  
 
 For differential expression with dream using linear (mixed) models see Hoffman and Roussos (2020).  For the original camera gene set test see Wu and Smyth (2012).
+}
+\examples{
+
+library(variancePartition)
+
+# simulate meta-data
+info <- data.frame(Age=c(20, 31, 52, 35, 43, 45),Group=c(0,0,0,1,1,1))
+
+# simulate expression data
+y <- matrix(rnorm(1000*6),1000,6)
+rownames(y) = paste0("gene", 1:1000)
+colnames(y) = rownames(info)
+
+# First set of 20 genes are genuinely differentially expressed
+index1 <- 1:20
+y[index1,4:6] <- y[index1,4:6]+1
+
+# Second set of 20 genes are not DE
+index2 <- 21:40
+
+# perform differential expression analysis with dream
+fit = dream(y, ~ Age + (1|Group), info)
+
+# perform gene set analysis testing Age
+res = zenith(fit, "Age", list(set1=index1,set2=index2) )
+
+head(res)
+
 }
 \references{
 {

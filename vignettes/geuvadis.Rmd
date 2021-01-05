@@ -5,9 +5,10 @@ author:
 - name: "[Gabriel Hoffman](http://gabrielhoffman.github.io)"
   affiliation: | 
     Icahn School of Medicine at Mount Sinai, New York
-date: "`r date()`"
+date: > 
+    `r date()`
 abstract: >
- Perform gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/btaa687) by considering the correlation between gene expression traits.  [Zenith](https://github.com/GabrielHoffman/zenith) performs competitive gene sets analysis by comparing the tests statistics from genes in a  gene set to the rest of the genes not in the set while modeling correlation between genes in the set.  This package is a slight modification of [limma::camera](https://doi.org/10.1093/nar/gks461) to 1) be compatible with dream, and 2) allow identification of gene sets with log fold changes with mixed sign by using the squared test statistic.  
+ Perform gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/10.1093/bioinformatics/btaa687) by considering the correlation between gene expression traits.  This package implements the [camera](https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/camera) method from the [limma](https://bioconductor.org/packages/limma/) package proposed by [Wu and Smyth (2012)](https://doi.org/10.1093/nar/gks461).  `zenith()` is a simple extension of `camera()` to be compatable with linear (mixed) models implemented in `dream()`.
 vignette: >
   %\VignetteIndexEntry{Example usage of zenith on GEUVAIDIS RNA-seq}
   %\VignetteEngine{knitr::rmarkdown}
@@ -186,6 +187,7 @@ plot(df$Correlation.x, df$Correlation.y, xlab="Correlation from zenith", ylab="C
 abline(0, 1, col="red")
 ```
 
+<!---
 ## Zenith with squared test statistic
 Using the squared test statistic allows zenith to identify gene sets with both positive and negative effects.  But note that the `Direction` must be interpreted differently here.  `Up` indicates that the square test statistics from genes in the gene set are larger then the background.  Because the test statistics are squared, the effects can be a mix or positive and negative.  Therefore `Up` is the relevant test here.  Conversely, `Down` indicates that the genes in the gene set are __less__ associated with the variable than the background.  So gene sets that are `Down` are not usually of biological interest.
 ```{r zenith_squared}
@@ -196,6 +198,7 @@ res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE)
 ```{r kable.zenith_squared}
 res_zenith2[1:20,] %>% kable %>% kable_styling(full_width = FALSE)    
 ```
+--->
 
 ## Analysis with MSigDB
 #### Load [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) and perform zenith analysis
@@ -211,11 +214,16 @@ n_genes_in = 10
 index = index[sapply(index, length) >= n_genes_in]
 
  # zenith analysis of MSigDB using square test statistics
-res_zenith_msigdb = zenith( fit, "sexmale", index, squaredStats=TRUE)
+res_zenith_msigdb = zenith( fit, "sexmale", index)
 ```
 
 ```{r kable.zenith_squared.msigdb}
-res_zenith_msigdb[1:20,] %>% kable %>% kable_styling(full_width = FALSE)
+res_zenith_msigdb[1:20,] %>% kable %>% kable_styling(full_width = FALSE)  
+```
+
+
+```{r, cache=FALSE, echo=FALSE}
+knitr::knit_exit()
 ```
 
 #### Zenith controls the false positive rate 

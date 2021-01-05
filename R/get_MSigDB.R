@@ -4,10 +4,10 @@
 #' Load MSigDB genesets
 #'
 #' @param cat array of categories to load
-#' @param to convert gene names to this type using EnrichmentBrowser::idMap().  See EnrichmentBrowser::idTypes(org="hsa") for valid types
+#' @param to convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types
 #'
 #' @details
-#' This function loads the MSigDB gene sets using the packages EnrichmentBrowser and msigdbr.  It can take a mintute to load because converting gene name type is slow.   
+#' This function loads the MSigDB gene sets using the packages \code{EnrichmentBrowser} and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.   
 #'
 #' @return Gene sets stored as GeneSetCollection
 #' @examples

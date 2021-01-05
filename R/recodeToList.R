@@ -1,6 +1,6 @@
 #' Recode GeneSetCollection to list used by limma
 #'
-#' Recode GeneSetCollection to list used by limma
+#' Recode \code{GeneSetCollection} to \code{list} used by \code{limma}
 #'
 #' @param gsc GeneSetCollection object
 #'

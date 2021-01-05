@@ -12,7 +12,7 @@ get_MSigDB(
 \arguments{
 \item{cat}{array of categories to load}
 
-\item{to}{convert gene names to this type using EnrichmentBrowser::idMap().  See EnrichmentBrowser::idTypes(org="hsa") for valid types}
+\item{to}{convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types}
 }
 \value{
 Gene sets stored as GeneSetCollection
@@ -21,7 +21,7 @@ Gene sets stored as GeneSetCollection
 Load MSigDB genesets
 }
 \details{
-This function loads the MSigDB gene sets using the packages EnrichmentBrowser and msigdbr.  It can take a mintute to load because converting gene name type is slow.
+This function loads the MSigDB gene sets using the packages \code{EnrichmentBrowser} and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.
 }
 \examples{
 # load Hallmark gene sets

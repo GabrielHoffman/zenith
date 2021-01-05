@@ -10,5 +10,5 @@ recodeToList(gsc)
 \item{gsc}{GeneSetCollection object}
 }
 \description{
-Recode GeneSetCollection to list used by limma
+Recode \code{GeneSetCollection} to \code{list} used by \code{limma}
 }

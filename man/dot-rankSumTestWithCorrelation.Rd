@@ -7,7 +7,7 @@
 .rankSumTestWithCorrelation(index, statistics, correlation = 0, df = Inf)
 }
 \arguments{
-\item{index}{any index vector such that 'statistics[index]' contains the values of the statistic for the test group.}
+\item{index}{any index vector such that \code{statistics[index]} contains the values of the statistic for the test group.}
 
 \item{statistics}{numeric vector giving values of the test statistic.}
 
