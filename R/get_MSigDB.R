@@ -3,7 +3,7 @@
 #'
 #' Load MSigDB genesets
 #'
-#' @param cat array of categories to load
+#' @param cat array of categories to load.  Defaults to array of all MSigDB categories
 #' @param to convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types
 #'
 #' @details
@@ -19,7 +19,7 @@
 #' 
 #' @import EnrichmentBrowser GSEABase msigdbr
 #' @export
-get_MSigDB = function(cat = c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7"), to = "ENSEMBL"){
+get_MSigDB = function(cat = unique(msigdbr_collections()$gs_cat), to = "ENSEMBL"){
 
 	gs.list = lapply( cat, function(x){
 		# get gene sets and convert to gene.id.type "to"

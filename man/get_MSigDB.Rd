@@ -4,13 +4,10 @@
 \alias{get_MSigDB}
 \title{Load MSigDB genesets}
 \usage{
-get_MSigDB(
-  cat = c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7"),
-  to = "ENSEMBL"
-)
+get_MSigDB(cat = unique(msigdbr_collections()$gs_cat), to = "ENSEMBL")
 }
 \arguments{
-\item{cat}{array of categories to load}
+\item{cat}{array of categories to load.  Defaults to array of all MSigDB categories}
 
 \item{to}{convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types}
 }
