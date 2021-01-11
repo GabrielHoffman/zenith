@@ -21,7 +21,21 @@ install_github("GabrielHoffman/variancePartition")
 
 install_github("GabrielHoffman/zenith")
 ```
+### Issues
+If you encounter the error:
+
+```
+Error in BroadCollection(category = tolower(cat), subCategory = tolower(subcat)) :
+	invalid BroadCollection category: ‘c8’
+```
+
+This is due to a recent addition of [cell type signature gene sets](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#C8) in [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb) v7.2.  In order to be compatible with this new addition, you must update the R package `GSEABase`: 
+
+```r
+remotes::install_github("Bioconductor/GSEABase")
+```
+In the future, this will be installed by default
 
 
-<sub><sub>Updated January 8, 2021</sub></sub>
+<sub><sub>Updated January 11, 2021</sub></sub>
 
