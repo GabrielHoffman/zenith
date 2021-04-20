@@ -8,7 +8,6 @@
 #' @param idx indeces or rownames to extract
 #' @param squareCorr compute the mean squared correlation instead
 #'
-#' @import variancePartition
 #' @importFrom Rfast cora
 corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
 
@@ -16,7 +15,7 @@ corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
     stop("fit must be result of dream(..., computeResiduals=TRUE)")
   }
 
-  # Compute residuals 
+  # Extract residuals 
   resid = fit$residuals[idx,,drop=FALSE]
 
   m = nrow(resid)

@@ -10,7 +10,6 @@ zenith(
   index,
   use.ranks = FALSE,
   allow.neg.cor = FALSE,
-  squaredStats = FALSE,
   progressbar = TRUE
 )
 }
@@ -24,8 +23,6 @@ zenith(
 \item{use.ranks}{do a rank-based test (\code{TRUE}) or a parametric test ('FALSE')?}
 
 \item{allow.neg.cor}{should reduced variance inflation factors be allowed for negative correlations?}
-
-\item{squaredStats}{Test squared test statstics to identify gene sets with log fold change of mixed sign.}
 
 \item{progressbar}{if TRUE, show progress bar}
 }

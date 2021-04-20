@@ -7,9 +7,9 @@
 #' @param fit result of differential expression with dream
 #' @param coef coefficient to test using \code{topTable(fit, coef)}
 #' @param index an index vector or a list of index vectors.  Can be any vector such that \code{fit[index,]} selects the rows corresponding to the test set.  The list can be made using \code{ids2indices}.
-#' @param  use.ranks do a rank-based test (\code{TRUE}) or a parametric test ('FALSE')?
+#' @param use.ranks do a rank-based test (\code{TRUE}) or a parametric test ('FALSE')?
 #' @param allow.neg.cor should reduced variance inflation factors be allowed for negative correlations?
-#' @param squaredStats Test squared test statstics to identify gene sets with log fold change of mixed sign.
+# @param squaredStats Test squared test statstics to identify gene sets with log fold change of mixed sign.
 #' @param progressbar if TRUE, show progress bar
 #'
 #' @details
@@ -67,11 +67,7 @@
 #' @import limma stats utils methods progress
 #'
 #' @export
-zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squaredStats=FALSE, progressbar=TRUE ){
-
-  if( squaredStats ){
-    stop("squaredStats == TRUE is not currently supported")
-  }
+zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, progressbar=TRUE ){
 
   if( ! is(fit, 'MArrayLM') ){
     stop("fit must be of class MArrayLM from variancePartition::dream")
@@ -115,12 +111,6 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
     stop("Model method must be either 'ls' or 'lmer'")
   }
 
-  # use squared test statistics
-  if( squaredStats ){
-    # Stat = Stat^2
-    Stat = abs(Stat) # testing
-  }
-
   # get number of statistics
   G = length( Stat )
   ID = rownames(fit)
@@ -159,7 +149,7 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
     # cumulative_work <<- cumulative_work + m^2
 
     # Compute correlation within geneset
-    res = corInGeneSet( fit, iset, squaredStats)
+    res = corInGeneSet( fit, iset, squareCorr=FALSE)
     correlation = res$correlation
     vif = res$vif
 
@@ -210,13 +200,13 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, squa
   rownames(tab) <- names(index)
 
   # p-value for two sided test
-  if( squaredStats ){
-    tab$PValue = tab$p.greater
-    tab$Direction = "Up"
-  }else{    
+  # if( squaredStats ){
+  #   tab$PValue = tab$p.greater
+  #   tab$Direction = "Up"
+  # }else{    
     tab$PValue = 2*pmin(tab$p.less, tab$p.greater)
     tab$Direction = ifelse(tab$p.less < tab$p.greater, "Down", "Up")
-  }
+  # }
 
   tab$FDR = p.adjust(tab$PValue, "BH")
 
