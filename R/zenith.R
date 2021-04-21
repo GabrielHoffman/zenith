@@ -64,7 +64,7 @@
 #' head(res)
 #' 
 #' @importFrom Rdpack reprompt
-#' @import limma stats utils methods progress
+#' @import limma variancePartition stats utils methods progress 
 #'
 #' @export
 zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, progressbar=TRUE ){
