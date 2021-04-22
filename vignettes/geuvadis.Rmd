@@ -1,5 +1,5 @@
 ---
-title: "[Zenith](https://github.com/GabrielHoffman/zenith) gene set testing after dream analysis"
+title: "Zenith gene set testing after dream analysis"
 subtitle: "Zenith controls the false positive rate while retaining power"
 author:
 - name: "[Gabriel Hoffman](http://gabrielhoffman.github.io)"
