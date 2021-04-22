@@ -187,18 +187,6 @@ plot(df$Correlation.x, df$Correlation.y, xlab="Correlation from zenith", ylab="C
 abline(0, 1, col="red")
 ```
 
-<!---
-## Zenith with squared test statistic
-Using the squared test statistic allows zenith to identify gene sets with both positive and negative effects.  But note that the `Direction` must be interpreted differently here.  `Up` indicates that the square test statistics from genes in the gene set are larger then the background.  Because the test statistics are squared, the effects can be a mix or positive and negative.  Therefore `Up` is the relevant test here.  Conversely, `Down` indicates that the genes in the gene set are __less__ associated with the variable than the background.  So gene sets that are `Down` are not usually of biological interest.
-```{r zenith_squared}
-res_zenith2 = zenith( fit, "sexmale", index, squaredStats=TRUE)    
-```
-
-#### Results from zenith
-```{r kable.zenith_squared}
-res_zenith2[1:20,] %>% kable %>% kable_styling(full_width = FALSE)    
-```
---->
 
 ## Analysis with MSigDB
 #### Load [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) and perform zenith analysis
