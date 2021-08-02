@@ -24,16 +24,17 @@
 get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL', includeOffspring=TRUE ){
 
 	gs.list = lapply( onto, function(x){
-		getGenesets(org="hsa", db="go", gene.id.type = to, return.type='GeneSetCollection', onto=x)
+		getGenesets(org="hsa", db="go", gene.id.type = to, return.type='GeneSetCollection', onto=x, hierarchical=includeOffspring)
 		})
 
 	# combine gene sets and convert to GeneSetCollection
 	gs.go = GeneSetCollection( do.call(c,gs.list) )
 
-	if( includeOffspring ){
-		# follow the GO hierarchy down and include all genes in offspring sets for a given gene set
-		gs.go = aggregate_GO_offspring( gs.go )
-	}
+	# now superceded by hierarchical=TRUE
+	# if( includeOffspring ){
+	# 	# follow the GO hierarchy down and include all genes in offspring sets for a given gene set
+	# 	gs.go = aggregate_GO_offspring( gs.go )
+	# }
 
 	# summary(sapply(geneIds(gs.go), length))
 

@@ -38,7 +38,7 @@ Depends:
 Imports:
     variancePartition (>= 1.19.16),
     limma,
-    EnrichmentBrowser (>= 2.19.13),
+    EnrichmentBrowser (>= 2.22.0),
     GSEABase, 
     msigdbr,
     Rfast,

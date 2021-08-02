@@ -1,5 +1,6 @@
 # zenith 1.0.1
 	- improve documentation
+	- get_GeneOntology() uses getGenesets(...,hierarchical=TRUE)
 
 # zenith 1.0.0
 	- Improve documetation

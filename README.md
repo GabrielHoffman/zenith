@@ -11,7 +11,7 @@ A future version will allow identification of gene sets with log fold changes wi
 ```r
 library(devtools)
 
-# install EnrichmentBrowser >= v2.19.13
+# install EnrichmentBrowser >= v2.22.0
 install_github("lgeistlinger/EnrichmentBrowser")
 
 # install variancePartition >= v1.19.16
