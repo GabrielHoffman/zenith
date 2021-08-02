@@ -54,7 +54,8 @@ get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL', include
 #'
 #' @return GeneSetCollection with aggregated gene sets
 #'
-#' @import EnrichmentBrowser GSEABase GO.db data.table
+#' @import EnrichmentBrowser GSEABase GO.db
+#' @importFrom data.table data.table setkey
 #'
 aggregate_GO_offspring = function( gs.GO ){
 
