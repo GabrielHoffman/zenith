@@ -1,3 +1,6 @@
+# zenith 1.0.2
+	- flag to disable correlation in zenith()
+
 # zenith 1.0.1
 	- improve documentation
 	- get_GeneOntology() uses getGenesets(...,hierarchical=TRUE)

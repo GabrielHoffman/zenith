@@ -11,6 +11,7 @@
 #' @param allow.neg.cor should reduced variance inflation factors be allowed for negative correlations?
 # @param squaredStats Test squared test statstics to identify gene sets with log fold change of mixed sign.
 #' @param progressbar if TRUE, show progress bar
+#' @param inter.gene.cor if NA, estimate correlation from data.  Otherwise, use specified value
 #'
 #' @details
 #' \code{zenith} gives the same results as \code{camera(..., inter.gene.cor=NA)} which estimates the correlation with each gene set.  
@@ -67,7 +68,7 @@
 #' @import limma variancePartition stats utils methods progress 
 #'
 #' @export
-zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, progressbar=TRUE ){
+zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, progressbar=TRUE, inter.gene.cor = NA){
 
   if( ! is(fit, 'MArrayLM') ){
     stop("fit must be of class MArrayLM from variancePartition::dream")
@@ -149,9 +150,14 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
     # cumulative_work <<- cumulative_work + m^2
 
     # Compute correlation within geneset
-    res = corInGeneSet( fit, iset, squareCorr=FALSE)
-    correlation = res$correlation
-    vif = res$vif
+    if( is.na(inter.gene.cor) ){
+      res = corInGeneSet( fit, iset, squareCorr=FALSE)
+      correlation = res$correlation
+      vif = res$vif
+    }else{
+      correlation = inter.gene.cor
+      vif = 1 + correlation * (m - 1) 
+    }
 
     # test
     # correlation = 0

@@ -10,7 +10,8 @@ zenith(
   index,
   use.ranks = FALSE,
   allow.neg.cor = FALSE,
-  progressbar = TRUE
+  progressbar = TRUE,
+  inter.gene.cor = NA
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ zenith(
 \item{allow.neg.cor}{should reduced variance inflation factors be allowed for negative correlations?}
 
 \item{progressbar}{if TRUE, show progress bar}
+
+\item{inter.gene.cor}{if NA, estimate correlation from data.  Otherwise, use specified value}
 }
 \value{
 \itemize{
