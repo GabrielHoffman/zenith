@@ -7,19 +7,20 @@ Perform gene set analysis on the result of differential expression using linear 
 A future version will allow identification of gene sets with log fold changes with mixed sign. But this is not currently supported.
 
 ## Install
-
 ```r
-library(devtools)
-
-# install EnrichmentBrowser >= v2.22.0
-install_github("lgeistlinger/EnrichmentBrowser")
-
-# install variancePartition >= v1.19.16
-install_github("GabrielHoffman/variancePartition")
-
-install_github("GabrielHoffman/zenith")
+# Install package and dependencies
+devtools::install_github("GabrielHoffman/zenith")
 ```
 
+## Dependencies
+Use of code aboves doesn't install these automatically
+```r
+# install EnrichmentBrowser >= v2.22.0
+devtools::install_github("lgeistlinger/EnrichmentBrowser")
+
+# install variancePartition >= v1.19.16
+devtools::install_github("GabrielHoffman/variancePartition")
+```
 
 ### Issues
 If you encounter the error:
