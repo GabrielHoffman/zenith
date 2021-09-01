@@ -12,7 +12,7 @@ A future version will allow identification of gene sets with log fold changes wi
 devtools::install_github("GabrielHoffman/zenith")
 ```
 
-## Dependencies
+### Dependencies
 In case code aboves doesn't install these automatically
 ```r
 # install EnrichmentBrowser >= v2.22.0
