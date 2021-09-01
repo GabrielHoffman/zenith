@@ -13,7 +13,7 @@ devtools::install_github("GabrielHoffman/zenith")
 ```
 
 ## Dependencies
-Use of code aboves doesn't install these automatically
+In case code aboves doesn't install these automatically
 ```r
 # install EnrichmentBrowser >= v2.22.0
 devtools::install_github("lgeistlinger/EnrichmentBrowser")
