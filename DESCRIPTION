@@ -50,3 +50,6 @@ Imports:
     stats
 RdMacros: Rdpack
 RoxygenNote: 7.1.1
+Remotes:     
+    github::GabrielHoffman/variancePartition,
+    github::GabrielHoffman/EnrichmentBrowser
