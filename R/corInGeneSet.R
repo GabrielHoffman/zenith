@@ -21,9 +21,14 @@ corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
   m = nrow(resid)
 
   # evaluate correlation between residuals
-  # This is the correlation between test statistics (almost, consider eBayes??)
-  # C = cor(t(resid))
-  C = cora(t(resid)) # this is a faster version of correlation in Rfast
+  # This is the correlation between test statistics
+  if( anyNA(resid) ){
+    C = cor(t(resid), use="pairwise.complete.obs")
+  }else{
+    # this is a faster version of correlation in Rfast
+    # but only works with no NA's
+    C = cora(t(resid)) 
+  }
 
   if( squareCorr ){
     # Correlation between squared test statistics

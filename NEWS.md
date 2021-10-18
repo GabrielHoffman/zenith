@@ -1,3 +1,6 @@
+# zenith 1.0.3
+	- fix issue with `corInGeneSet()` when some residuals are NA
+
 # zenith 1.0.2
 	- flag to disable correlation in zenith()
 
