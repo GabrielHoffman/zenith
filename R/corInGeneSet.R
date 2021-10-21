@@ -9,6 +9,7 @@
 #' @param squareCorr compute the mean squared correlation instead
 #'
 #' @importFrom Rfast cora
+#' @importFrom stats cor
 corInGeneSet <- function( fit, idx, squareCorr = FALSE ){
 
   if( is.null(fit$residuals) ){
