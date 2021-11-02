@@ -1,3 +1,6 @@
+# zenith 1.0.5
+	- bug fix in `zenith()` when `progressbar=FALSE`
+
 # zenith 1.0.3
 	- fix issue with `corInGeneSet()` when some residuals are NA
 

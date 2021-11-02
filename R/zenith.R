@@ -216,9 +216,11 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
 
   tab$FDR = p.adjust(tab$PValue, "BH")
 
-  if( progressbar & ! pb$finished){
-    pb$update( 1.0 )
-    pb$terminate() 
+  if( progressbar ){
+    if( ! pb$finished){
+      pb$update( 1.0 )
+      pb$terminate() 
+    }
   }
 
   # tab[,5] <- 2*pmin(tab[,3],tab[,4])

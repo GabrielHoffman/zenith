@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">zenith</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -90,17 +90,24 @@
 <a href="#note" class="anchor"></a>Note</h3>
 <p>A future version will allow identification of gene sets with log fold changes with mixed sign. But this is not currently supported.</p>
 </div>
+<div id="usage" class="section level3">
+<h3 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h3>
+<p>For compatability with <code><a href="https://rdrr.io/pkg/limma/man/camera.html">limma::camera</a></code>, use</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/zenith.html">zenith</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">coef</span>, <span class="va">index</span>, use.ranks<span class="op">=</span><span class="cn">FALSE</span>, inter.gene.cor<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span></code></pre></div>
+</div>
 <div id="install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install" class="anchor"></a>Install</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Install package and dependencies</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"GabrielHoffman/zenith"</span><span class="op">)</span></code></pre></div>
 <div id="dependencies" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dependencies" class="anchor"></a>Dependencies</h3>
 <p>In case code aboves doesn’t install these automatically</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install EnrichmentBrowser &gt;= v2.22.0</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"lgeistlinger/EnrichmentBrowser"</span><span class="op">)</span>
 
@@ -114,10 +121,10 @@
 <pre><code>Error in BroadCollection(category = tolower(cat), subCategory = tolower(subcat)) :
     invalid BroadCollection category: ‘c8’</code></pre>
 <p>This is due to a recent addition of <a href="https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#C8">cell type signature gene sets</a> in <a href="https://www.gsea-msigdb.org/gsea/msigdb">MSigDB</a> v7.2. In order to be compatible with this new addition, you must update the R package <code>GSEABase</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"Bioconductor/GSEABase"</span><span class="op">)</span></code></pre></div>
 <p>In the future, this will be installed by default</p>
-<p><sub><sub>Updated January 11, 2021</sub></sub></p>
+<p><sub><sub>Nov 1, 2021</sub></sub></p>
 </div>
 </div>
 </div>

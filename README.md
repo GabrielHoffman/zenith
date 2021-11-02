@@ -6,6 +6,12 @@ Perform gene set analysis on the result of differential expression using linear 
 ### Note
 A future version will allow identification of gene sets with log fold changes with mixed sign. But this is not currently supported.
 
+### Usage
+For compatability with `limma::camera`, use 
+```r
+zenith(fit, coef, index, use.ranks=FALSE, inter.gene.cor=0.01)
+```
+
 ## Install
 ```r
 # Install package and dependencies
@@ -38,5 +44,5 @@ remotes::install_github("Bioconductor/GSEABase")
 In the future, this will be installed by default
 
 
-<sub><sub>Updated January 11, 2021</sub></sub>
+<sub><sub>Nov 1, 2021</sub></sub>
 
