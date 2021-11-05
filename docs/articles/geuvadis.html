@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zenith</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
             <address class="author_afil">
       <p>Icahn School of Medicine at Mount Sinai, New York</p>
 <br><h4 class="date"></h4>
-<p>Mon Nov 1 20:09:54 2021</p>
+<p>Thu Nov 4 22:07:24 2021</p>
       
       <small class="dont-index">Source: <a href="https://github.com/GabrielHoffman/zenith/blob/master/vignettes/geuvadis.Rmd"><code>vignettes/geuvadis.Rmd</code></a></small>
       <div class="hidden name"><code>geuvadis.Rmd</code></div>
@@ -234,7 +234,8 @@ We see a clear separation of sex based on XIST from chrX and UTY from chrY.</p>
 <span class="co"># Run zenith.  </span>
 <span class="co"># Note that zenith allows analysis of any dream model and </span>
 <span class="co"># any coefficient or contrast defined in the model. </span>
-<span class="va">res_zenith</span> <span class="op">=</span> <span class="fu"><a href="../reference/zenith.html">zenith</a></span><span class="op">(</span> <span class="va">fit</span>, <span class="st">"sexmale"</span>, <span class="va">index</span><span class="op">)</span></code></pre></div>
+<span class="co"># Setting inter.gene.cor=NA estimates the correlation from the model</span>
+<span class="va">res_zenith</span> <span class="op">=</span> <span class="fu"><a href="../reference/zenith.html">zenith</a></span><span class="op">(</span> <span class="va">fit</span>, <span class="st">"sexmale"</span>, <span class="va">index</span>, inter.gene.cor<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></code></pre></div>
 <div id="compare-camera-and-zenith" class="section level3">
 <h3 class="hasAnchor">
 <a href="#compare-camera-and-zenith" class="anchor"></a>Compare camera and zenith</h3>
@@ -794,28 +795,28 @@ M5126_PYEON_CANCER_HEAD_AND_NECK_VS_CERVICAL_DN
 13
 </td>
 <td style="text-align:right;">
-0.1418496
+0.01
 </td>
 <td style="text-align:right;">
 19.224970
 </td>
 <td style="text-align:right;">
-0.9422304
+0.6067280
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0000000
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -826,28 +827,28 @@ M16091_DISTECHE_ESCAPED_FROM_X_INACTIVATION
 13
 </td>
 <td style="text-align:right;">
-0.0715801
+0.01
 </td>
 <td style="text-align:right;">
 -14.671145
 </td>
 <td style="text-align:right;">
-0.7922187
+0.6150034
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Down
 </td>
 <td style="text-align:right;">
-0.0000000
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -858,28 +859,28 @@ M39089_ZHONG_PFC_C2_SOX5_BCL11B_POS_EXCITATORY_NEURON
 16
 </td>
 <td style="text-align:right;">
-0.0046050
+0.01
 </td>
 <td style="text-align:right;">
 6.648676
 </td>
 <td style="text-align:right;">
-0.5491522
+0.5695400
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0000000
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -890,28 +891,28 @@ M7727_RICKMAN_HEAD_AND_NECK_CANCER_B
 19
 </td>
 <td style="text-align:right;">
-0.0053964
+0.01
 </td>
 <td style="text-align:right;">
 4.895289
 </td>
 <td style="text-align:right;">
-0.5113755
+0.5303168
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0000000
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -922,60 +923,28 @@ M34944_HP_OLIGOSPERMIA
 14
 </td>
 <td style="text-align:right;">
-0.0177363
+0.01
 </td>
 <td style="text-align:right;">
 5.544998
 </td>
 <td style="text-align:right;">
-0.6309138
+0.6046005
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0000000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-M32591_MIR151A_5P_MIR151B
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-0.0163958
-</td>
-<td style="text-align:right;">
-4.783951
-</td>
-<td style="text-align:right;">
-0.7217704
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.0e+00
-</td>
-<td style="text-align:left;">
-Up
-</td>
-<td style="text-align:right;">
-0.0000003
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -986,28 +955,28 @@ M22112_chrXp22
 74
 </td>
 <td style="text-align:right;">
-0.0288466
+0.01
 </td>
 <td style="text-align:right;">
 -2.886132
 </td>
 <td style="text-align:right;">
-0.4356068
+0.3252910
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Down
 </td>
 <td style="text-align:right;">
-0.0000003
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -1018,28 +987,28 @@ M22115_chrXq13
 45
 </td>
 <td style="text-align:right;">
-0.0272969
+0.01
 </td>
 <td style="text-align:right;">
 -3.048338
 </td>
 <td style="text-align:right;">
-0.4708069
+0.3809299
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Down
 </td>
 <td style="text-align:right;">
-0.0000008
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -1050,28 +1019,28 @@ M37972_HP_NON_OBSTRUCTIVE_AZOOSPERMIA
 17
 </td>
 <td style="text-align:right;">
-0.0424284
+0.01
 </td>
 <td style="text-align:right;">
 4.306009
 </td>
 <td style="text-align:right;">
-0.6692211
+0.5563521
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0000009
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -1082,28 +1051,28 @@ M6596_GSE5099_CLASSICAL_M1_VS_ALTERNATIVE_M2_MACROPHAGE_DN
 119
 </td>
 <td style="text-align:right;">
-0.0228115
+0.01
 </td>
 <td style="text-align:right;">
 2.193358
 </td>
 <td style="text-align:right;">
-0.3747157
+0.2881369
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-0.0e+00
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0000226
+0.00e+00
 </td>
 </tr>
 <tr>
@@ -1114,188 +1083,156 @@ M11031_CHEOK_RESPONSE_TO_MERCAPTOPURINE_AND_LD_MTX_UP
 10
 </td>
 <td style="text-align:right;">
-0.1047066
+0.01
 </td>
 <td style="text-align:right;">
 5.084481
 </td>
 <td style="text-align:right;">
-0.9387448
+0.7033105
 </td>
 <td style="text-align:right;">
-1.0000000
+1
 </td>
 <td style="text-align:right;">
-0.0000000
+0
 </td>
 <td style="text-align:right;">
-1.0e-07
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0002196
+0.00e+00
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-M8555_MODULE_489
+M32591_MIR151A_5P_MIR151B
 </td>
 <td style="text-align:right;">
-11
+10
 </td>
 <td style="text-align:right;">
-0.0257540
+0.01
 </td>
 <td style="text-align:right;">
-3.819485
+4.783951
 </td>
 <td style="text-align:right;">
-0.7207211
+0.7034449
 </td>
 <td style="text-align:right;">
-0.9999999
+1
 </td>
 <td style="text-align:right;">
-0.0000001
+0
 </td>
 <td style="text-align:right;">
-2.0e-07
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0003694
+1.00e-07
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-M18555_MODULE_330
+M2778_TAVAZOIE_METASTASIS
 </td>
 <td style="text-align:right;">
-11
+54
 </td>
 <td style="text-align:right;">
-0.0058980
+0.01
 </td>
 <td style="text-align:right;">
-3.393817
+2.370876
 </td>
 <td style="text-align:right;">
-0.6615542
+0.3587496
 </td>
 <td style="text-align:right;">
-0.9999998
+1
 </td>
 <td style="text-align:right;">
-0.0000002
+0
 </td>
 <td style="text-align:right;">
-4.0e-07
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0008073
+2.00e-07
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-M12117_GOBP_REGULATION_OF_ANDROGEN_RECEPTOR_SIGNALING_PATHWAY
+M37270_HP_ABNORMAL_SPERMATOGENESIS
 </td>
 <td style="text-align:right;">
-20
+72
 </td>
 <td style="text-align:right;">
--0.0138619
+0.01
 </td>
 <td style="text-align:right;">
-2.394862
+2.072099
 </td>
 <td style="text-align:right;">
-0.4769345
+0.3285087
 </td>
 <td style="text-align:right;">
-0.9999996
+1
 </td>
 <td style="text-align:right;">
-0.0000004
+0
 </td>
 <td style="text-align:right;">
-7.0e-07
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0012681
+1.30e-06
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-M1659_CARDOSO_RESPONSE_TO_GAMMA_RADIATION_AND_3AB
+M6669_HEDENFALK_BREAST_CANCER_BRACX_UP
 </td>
 <td style="text-align:right;">
-13
+17
 </td>
 <td style="text-align:right;">
--0.0267058
+0.01
 </td>
 <td style="text-align:right;">
-2.963385
+-3.256621
 </td>
 <td style="text-align:right;">
-0.5914451
+0.5568357
 </td>
 <td style="text-align:right;">
-0.9999996
+0
 </td>
 <td style="text-align:right;">
-0.0000004
+1
 </td>
 <td style="text-align:right;">
-8.0e-07
+0e+00
 </td>
 <td style="text-align:left;">
-Up
+Down
 </td>
 <td style="text-align:right;">
-0.0012681
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-M5384_GSE3982_MEMORY_CD4_TCELL_VS_BCELL_UP
-</td>
-<td style="text-align:right;">
-143
-</td>
-<td style="text-align:right;">
-0.0142444
-</td>
-<td style="text-align:right;">
-1.522163
-</td>
-<td style="text-align:right;">
-0.3099245
-</td>
-<td style="text-align:right;">
-0.9999994
-</td>
-<td style="text-align:right;">
-0.0000006
-</td>
-<td style="text-align:right;">
-1.3e-06
-</td>
-<td style="text-align:left;">
-Up
-</td>
-<td style="text-align:right;">
-0.0017352
+1.66e-05
 </td>
 </tr>
 <tr>
@@ -1306,124 +1243,188 @@ M22110_chrXp11
 104
 </td>
 <td style="text-align:right;">
-0.0173072
+0.01
 </td>
 <td style="text-align:right;">
 -1.709990
 </td>
 <td style="text-align:right;">
-0.3486447
+0.2979060
 </td>
 <td style="text-align:right;">
-0.0000007
+0
 </td>
 <td style="text-align:right;">
-0.9999993
+1
 </td>
 <td style="text-align:right;">
-1.3e-06
+0e+00
 </td>
 <td style="text-align:left;">
 Down
 </td>
 <td style="text-align:right;">
-0.0017352
+2.81e-05
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-M15380_KORKOLA_EMBRYONIC_CARCINOMA_VS_SEMINOMA_DN
+M17751_chr19p13
+</td>
+<td style="text-align:right;">
+425
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+-1.353669
+</td>
+<td style="text-align:right;">
+0.2362841
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0e+00
+</td>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+2.81e-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M8555_MODULE_489
 </td>
 <td style="text-align:right;">
 11
 </td>
 <td style="text-align:right;">
--0.0070549
+0.01
 </td>
 <td style="text-align:right;">
--3.146648
+3.819485
 </td>
 <td style="text-align:right;">
-0.6429526
+0.6740911
 </td>
 <td style="text-align:right;">
-0.0000007
+1
 </td>
 <td style="text-align:right;">
-0.9999993
+0
 </td>
 <td style="text-align:right;">
-1.4e-06
-</td>
-<td style="text-align:left;">
-Down
-</td>
-<td style="text-align:right;">
-0.0017352
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-M14833_GAUSSMANN_MLL_AF4_FUSION_TARGETS_B_UP
-</td>
-<td style="text-align:right;">
-16
-</td>
-<td style="text-align:right;">
-0.0065918
-</td>
-<td style="text-align:right;">
--2.734085
-</td>
-<td style="text-align:right;">
-0.5588630
-</td>
-<td style="text-align:right;">
-0.0000007
-</td>
-<td style="text-align:right;">
-0.9999993
-</td>
-<td style="text-align:right;">
-1.4e-06
-</td>
-<td style="text-align:left;">
-Down
-</td>
-<td style="text-align:right;">
-0.0017352
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-M32473_MIR3135A
-</td>
-<td style="text-align:right;">
-29
-</td>
-<td style="text-align:right;">
-0.0160716
-</td>
-<td style="text-align:right;">
-2.330129
-</td>
-<td style="text-align:right;">
-0.4768045
-</td>
-<td style="text-align:right;">
-0.9999993
-</td>
-<td style="text-align:right;">
-0.0000007
-</td>
-<td style="text-align:right;">
-1.4e-06
+0e+00
 </td>
 <td style="text-align:left;">
 Up
 </td>
 <td style="text-align:right;">
-0.0017352
+3.74e-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M6593_GSE5099_DAY3_VS_DAY7_MCSF_TREATED_MACROPHAGE_DN
+</td>
+<td style="text-align:right;">
+120
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+1.610435
+</td>
+<td style="text-align:right;">
+0.2880756
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0e+00
+</td>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+5.32e-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M561_chr19q13
+</td>
+<td style="text-align:right;">
+527
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+-1.280877
+</td>
+<td style="text-align:right;">
+0.2318304
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1e-07
+</td>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+7.15e-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M5384_GSE3982_MEMORY_CD4_TCELL_VS_BCELL_UP
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+1.522163
+</td>
+<td style="text-align:right;">
+0.2774059
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1e-07
+</td>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+8.31e-05
 </td>
 </tr>
 </tbody>

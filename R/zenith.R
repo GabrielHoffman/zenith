@@ -68,7 +68,7 @@
 #' @import limma variancePartition stats utils methods progress 
 #'
 #' @export
-zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, progressbar=TRUE, inter.gene.cor = NA){
+zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, progressbar=TRUE, inter.gene.cor = 0.01){
 
   if( ! is(fit, 'MArrayLM') ){
     stop("fit must be of class MArrayLM from variancePartition::dream")

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zenith</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
   use.ranks <span class='op'>=</span> <span class='cn'>FALSE</span>,
   allow.neg.cor <span class='op'>=</span> <span class='cn'>FALSE</span>,
   progressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  inter.gene.cor <span class='op'>=</span> <span class='cn'>NA</span>
+  inter.gene.cor <span class='op'>=</span> <span class='fl'>0.01</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -234,17 +234,17 @@ doi: <a href='https://doi.org/10.1093/nar/gks461'>10.1093/nar/gks461</a>
 <span class='co'># perform differential expression analysis with dream</span>
 <span class='va'>fit</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/variancePartition/man/dream-method.html'>dream</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='op'>~</span> <span class='va'>Age</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span><span class='op'>|</span><span class='va'>Group</span><span class='op'>)</span>, <span class='va'>info</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dividing work into 50 chunks...</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Total:20 s</span></div><div class='input'>
+#&gt; <span class='message'>Total:19 s</span></div><div class='input'>
 <span class='co'># perform gene set analysis testing Age</span>
 <span class='va'>res</span> <span class='op'>=</span> <span class='fu'>zenith</span><span class='op'>(</span><span class='va'>fit</span>, <span class='st'>"Age"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>set1<span class='op'>=</span><span class='va'>index1</span>,set2<span class='op'>=</span><span class='va'>index2</span><span class='op'>)</span> <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      NGenes Correlation      delta        se    p.less p.greater    PValue
-#&gt; set1     20  0.03288383  0.2820288 0.3003327 0.7994064 0.2005936 0.4011872
-#&gt; set2     20  0.04809625 -0.1486478 0.3258152 0.3360195 0.6639805 0.6720390
-#&gt;      Direction      FDR
-#&gt; set1        Up 0.672039
-#&gt; set2      Down 0.672039</div><div class='input'>
+#&gt; set1     20        0.01  0.2820288 0.2576079 0.8322653 0.1677347 0.3354694
+#&gt; set2     20        0.01 -0.1486478 0.2577404 0.2976037 0.7023963 0.5952074
+#&gt;      Direction       FDR
+#&gt; set1        Up 0.5952074
+#&gt; set2      Down 0.5952074</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

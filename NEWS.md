@@ -1,3 +1,6 @@
+# zenith 1.0.8
+	- in `zenith()` set `inter.gene.cor=0.01` to be default to be consistent with `limma::camera`
+
 # zenith 1.0.5
 	- bug fix in `zenith()` when `progressbar=FALSE`
 

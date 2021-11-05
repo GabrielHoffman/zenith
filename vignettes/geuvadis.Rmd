@@ -165,7 +165,8 @@ res_camera = camera( vobj, index, dsgn, inter.gene.cor=NA, contrast="sexmale")
 # Run zenith.  
 # Note that zenith allows analysis of any dream model and 
 # any coefficient or contrast defined in the model. 
-res_zenith = zenith( fit, "sexmale", index)
+# Setting inter.gene.cor=NA estimates the correlation from the model
+res_zenith = zenith( fit, "sexmale", index, inter.gene.cor=NA)
 ```
 
 ### Compare camera and zenith

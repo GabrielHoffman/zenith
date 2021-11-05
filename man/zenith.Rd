@@ -11,7 +11,7 @@ zenith(
   use.ranks = FALSE,
   allow.neg.cor = FALSE,
   progressbar = TRUE,
-  inter.gene.cor = NA
+  inter.gene.cor = 0.01
 )
 }
 \arguments{
