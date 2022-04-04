@@ -6,14 +6,14 @@ Perform gene set analysis on the result of differential expression using linear 
 ## Install
 ```r
 # Install package and dependencies
-devtools::install_github("GabrielHoffman/zenith")
+devtools::install_github("DiseaseNeuroGenomics/zenith")
 ```
 
 ### Dependencies
 In case code aboves doesn't install these automatically
 ```r
 devtools::install_github("lgeistlinger/EnrichmentBrowser")
-devtools::install_github("GabrielHoffman/variancePartition")
+devtools::install_github("DiseaseNeuroGenomics/variancePartition")
 ```
 
 ## Supported gene set databases

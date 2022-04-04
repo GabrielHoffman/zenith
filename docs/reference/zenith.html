@@ -34,7 +34,7 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
       <ul class="navbar-nav"><li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/GabrielHoffman/zenith/" aria-label="github">
+  <a class="external-link nav-link" href="https://github.com/DiseaseNeuroGenomics/zenith/" aria-label="github">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -47,7 +47,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Gene set analysis following differential expression with dream</h1>
-      <small class="dont-index">Source: <a href="https://github.com/GabrielHoffman/zenith/blob/HEAD/R/zenith.R" class="external-link"><code>R/zenith.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/DiseaseNeuroGenomics/zenith/blob/HEAD/R/zenith.R" class="external-link"><code>R/zenith.R</code></a></small>
       <div class="d-none name"><code>zenith.Rd</code></div>
     </div>
 
@@ -147,18 +147,18 @@ doi: <a href="https://doi.org/10.1093/nar/gks461" class="external-link">10.1093/
 <span class="r-in"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="http://gabrielhoffman.github.io/variancePartition/reference/dream-method.html" class="external-link">dream</a></span><span class="op">(</span><span class="va">y</span>, <span class="op">~</span> <span class="va">Age</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">Group</span><span class="op">)</span>, <span class="va">info</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dividing work into 50 chunks...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total:134 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total:117 s</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># perform gene set analysis testing Age</span></span>
 <span class="r-in"><span class="va">res</span> <span class="op">=</span> <span class="fu">zenith</span><span class="op">(</span><span class="va">fit</span>, <span class="st">"Age"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>set1<span class="op">=</span><span class="va">index1</span>,set2<span class="op">=</span><span class="va">index2</span><span class="op">)</span> <span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      NGenes Correlation        delta        se    p.less p.greater    PValue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set1     20        0.01  0.207567591 0.2357681 0.7852961 0.2147039 0.4294079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set2     20        0.01 -0.007468133 0.2358766 0.4881457 0.5118543 0.9762914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      NGenes Correlation       delta        se    p.less p.greater    PValue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set2     20        0.01 -0.07437186 0.2395207 0.3859097 0.6140903 0.7718194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set1     20        0.01  0.00867195 0.2395342 0.5135650 0.4864350 0.9728699</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Direction       FDR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set1        Up 0.8588158</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set2      Down 0.9762914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set2      Down 0.9728699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set1        Up 0.9728699</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
