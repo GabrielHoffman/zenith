@@ -8,7 +8,8 @@ Maintainer: Gabriel E. Hoffman <gabriel.hoffman@mssm.edu>
 Description: Perform gene set analysis on the result of differential expression using linear (mixed) modeling with dream by considering the correlation between gene expression traits.  This package implements the camera method from the limma package proposed by Wu and Smyth (2012).  zenith is a simple extension of camera to be compatible with linear mixed models implemented in variancePartition::dream().
 VignetteBuilder: knitr
 License: GPL (>= 2)
-BugReports: https://github.com/GabrielHoffman/zenith/issues
+URL: https://DiseaseNeuroGenomics.github.io/zenith
+BugReports: https://github.com/DiseaseNeuroGenomics/zenith/issues
 Suggests:
     BiocStyle,
     BiocGenerics,
