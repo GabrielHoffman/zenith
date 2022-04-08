@@ -1,3 +1,6 @@
+# zenith 0.99.0
+ - submit to BioC
+
 # zenith 1.0.7
  - update docs
 
