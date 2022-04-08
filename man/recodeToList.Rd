@@ -9,6 +9,18 @@ recodeToList(gsc)
 \arguments{
 \item{gsc}{GeneSetCollection object}
 }
+\value{
+list storing data from GeneSetCollection
+}
 \description{
 Recode \code{GeneSetCollection} to \code{list} used by \code{limma}
+}
+\examples{
+
+# load Hallmark gene sets
+gs = get_MSigDB('H')
+
+# recode GeneSetCollection as a list
+gs.list = recodeToList(gs)
+
 }

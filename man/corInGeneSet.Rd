@@ -13,6 +13,9 @@ corInGeneSet(fit, idx, squareCorr = FALSE)
 
 \item{squareCorr}{compute the mean squared correlation instead}
 }
+\value{
+list storing correlation and variance inflation factor
+}
 \description{
 Evaluate mean correlation between residuals in gene set based on results from dream
 }

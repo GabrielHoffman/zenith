@@ -9,6 +9,9 @@
 \arguments{
 \item{gsc}{GeneSetCollection object}
 }
+\value{
+list storing data from GeneSetCollection
+}
 \description{
 Recode GeneSetCollection to list used by limma
 }

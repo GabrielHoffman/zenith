@@ -2,8 +2,8 @@ pandoc: 2.16.2
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
-  geuvadis: geuvadis.html
-last_built: 2022-04-04T23:33Z
+  zenith: zenith.html
+last_built: 2022-04-08T18:12Z
 urls:
   reference: http://gabrielhoffman.github.io/zenith/reference
   article: http://gabrielhoffman.github.io/zenith/articles

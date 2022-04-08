@@ -9,13 +9,6 @@ Perform gene set analysis on the result of differential expression using linear 
 devtools::install_github("DiseaseNeuroGenomics/zenith")
 ```
 
-### Dependencies
-In case code aboves doesn't install these automatically
-```r
-devtools::install_github("lgeistlinger/EnrichmentBrowser")
-devtools::install_github("DiseaseNeuroGenomics/variancePartition")
-```
-
 ## Supported gene set databases
 [EnrichmentBrowser](https://bioconductor.org/packages/EnrichmentBrowser/) provides access to a range of gene set databases.  Here are some shortcuts to load common databases:  
 

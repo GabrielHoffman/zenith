@@ -256,6 +256,7 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
 #' @param df degrees of freedom which the correlation has been estimated.
 #'
 #' @details See \code{limma::.rankSumTestWithCorrelation}
+#' @return data.frame storing results of hypothesis test
 #'
 .rankSumTestWithCorrelation = function (index, statistics, correlation = 0, df = Inf){
     n <- length(statistics)

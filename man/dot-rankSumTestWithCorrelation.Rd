@@ -15,6 +15,9 @@
 
 \item{df}{degrees of freedom which the correlation has been estimated.}
 }
+\value{
+data.frame storing results of hypothesis test
+}
 \description{
 Same as \code{limma::.rankSumTestWithCorrelation}, but returns effect size.
 }

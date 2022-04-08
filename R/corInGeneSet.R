@@ -8,6 +8,7 @@
 #' @param idx indeces or rownames to extract
 #' @param squareCorr compute the mean squared correlation instead
 #'
+#' @return list storing correlation and variance inflation factor
 #' @importFrom Rfast cora
 #' @importFrom stats cor
 corInGeneSet <- function( fit, idx, squareCorr = FALSE ){

@@ -4,6 +4,15 @@
 #'
 #' @param gsc GeneSetCollection object
 #'
+#' @return list storing data from GeneSetCollection
+#' @examples
+#' 
+#' # load Hallmark gene sets
+#' gs = get_MSigDB('H')
+#' 
+#' # recode GeneSetCollection as a list
+#' gs.list = recodeToList(gs)
+#'
 #' @rdname recodeToList
 #' @export
 setGeneric("recodeToList", function(gsc)
@@ -15,6 +24,7 @@ setGeneric("recodeToList", function(gsc)
 #'
 #' @param gsc GeneSetCollection object
 #'
+#' @return list storing data from GeneSetCollection
 #' @rdname recodeToList-GeneSetCollection
 #' @importFrom GSEABase geneIds 
 #' @export
