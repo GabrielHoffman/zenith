@@ -14,7 +14,7 @@
 #' @return Gene sets stored as GeneSetCollection
 #' @examples
 #' # load GO Biological Process
-#' gs = get_GeneOntology('BP')
+#' # gs = get_GeneOntology('BP')
 #' 
 #' # load all gene sets
 #' # gs = get_GeneOntology()
