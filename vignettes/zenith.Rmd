@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
   cache = TRUE)
 
 
-# rmarkdown::render("geuvadis.Rmd")
+# rmarkdown::render("zenith.Rmd")
 
 
 # devtools::reload("/Users/gabrielhoffman/workspace/repos/zenith")
@@ -44,7 +44,7 @@ knitr::opts_chunk$set(
 ## Supported gene set databases
 [EnrichmentBrowser](https://bioconductor.org/packages/EnrichmentBrowser/) provides access to a range of gene set databases.  Here are some shortcuts to load common databases:  
 
-```r
+```{r load1, eval=FALSE}
 library(zenith)
 
 # MSigDB
@@ -56,7 +56,7 @@ gs.go = get_GeneOntology()
 
 For more detailed control including alternate gene identifiers (i.e. ENSEMBL, ENTREZ) or species (i.e. hsa, mmu)
 
-```r
+```{r load2, eval=FALSE}
 library(EnrichmentBrowser)
 
 # KEGG
@@ -179,8 +179,8 @@ fit = eBayes(fit)
 
 #### Load genesets
 ```{r load.genesets}
-# Load Gene Ontology database 
-go.gs = get_GeneOntology()
+# Load Gene Ontology database: only Molecular Function
+go.gs = get_GeneOntology("MF")
    
 # convert from GeneSetCollection to list used by camera and zenith
 geneSets_GO = recodeToList( go.gs )
@@ -230,7 +230,7 @@ abline(0, 1, col="red")
 
 ## Analysis with MSigDB
 #### Load [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) and perform zenith analysis
-```{r MSigDB}
+```{r MSigDB, eval=FALSE}
 gs_msigdb = get_MSigDB()
 
 # Map from Ensembl genes in gs_msigdb to 
@@ -245,7 +245,7 @@ index = index[sapply(index, length) >= n_genes_in]
 res_zenith_msigdb = zenith( fit, "sexmale", index)
 ```
 
-```{r kable.zenith_squared.msigdb}
+```{r kable.zenith_squared.msigdb, eval=FALSE, echo=FALSE}
 res_zenith_msigdb[1:20,] %>% kable %>% kable_styling(full_width = FALSE)  
 ```
 
