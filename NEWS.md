@@ -1,3 +1,7 @@
+# zenith 0.99.2
+ - fix documentation
+ - add `zenith_gsa()`
+
 # zenith 0.99.0
  - submit to BioC
 

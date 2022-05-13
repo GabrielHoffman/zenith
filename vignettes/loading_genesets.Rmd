@@ -1,0 +1,103 @@
+---
+title: "Loading gene sets"
+author:
+- name: "[Gabriel Hoffman](http://gabrielhoffman.github.io)"
+  affiliation: | 
+    Icahn School of Medicine at Mount Sinai, New York
+vignette: >
+  %\VignetteIndexEntry{Example usage of zenith on GEUVAIDIS RNA-seq}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\usepackage[utf8]{inputenc}
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+
+```{r knitr.setup, echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning=FALSE,
+  message=FALSE,
+  error = FALSE,
+  tidy = FALSE,
+  cache = TRUE)
+
+
+# rmarkdown::render("loading_genesets.Rmd")
+```
+
+The `zenith` package builds on [EnrichmentBrowser](https://bioconductor.org/packages/EnrichmentBrowser/) to provde access to a range of gene set databases.  Genesets can take ~1 min to download and load the first time.  They are automatically cached on disk, so loading the second time takes just a second.  
+
+# Easy loading of gene set databases
+Here are some shortcuts to load common databases:  
+
+```{r load1, eval=FALSE}
+library(zenith)
+
+## MSigDB as ENSEMBL genes
+# all genesets in MSigDB
+gs.msigdb = get_MSigDB()
+
+# only Hallmark gene sets
+gs = get_MSigDB('H')
+
+# only C1
+gs = get_MSigDB('C1')
+
+# C1 and C2
+gs = get_MSigDB(c('C1', 'C2'))
+
+# C1 as gene SYMBOL
+gs = get_MSigDB('C1', to="SYMBOL")
+
+# C1 as gene ENTREZ
+gs = get_MSigDB('C1', to="ENTREZ")
+
+## Gene Ontology
+gs.go = get_GeneOntology()
+
+# load Biological Process and gene SYMBOL
+gs.go = get_GeneOntology("BP", to="SYMBOL")
+```
+
+
+
+# Other databases
+ [EnrichmentBrowser](https://bioconductor.org/packages/EnrichmentBrowser/) provides additional databases (i.e. [KEGG](https://www.genome.jp/kegg/), [Enrichr](https://maayanlab.cloud/Enrichr/#libraries)), alternate gene identifiers (i.e. ENSEMBL, ENTREZ) or species (i.e. hsa, mmu)
+
+```{r load2, eval=FALSE}
+library(EnrichmentBrowser)
+
+# KEGG
+gs.kegg = getGenesets(org = "hsa", 
+                      db = "kegg", 
+                      gene.id.type = "ENSEMBL", 
+                      return.type = "GeneSetCollection")
+
+## ENRICHR resource
+# provides many additional gene set databases
+df = showAvailableCollections( org = "hsa", db = "enrichr")
+
+head(df)
+
+# Allen_Brain_Atlas_10x_scRNA_2021
+gs.allen = getGenesets( org = "hsa", 
+                        db = "enrichr", 
+                        lib = "Allen_Brain_Atlas_10x_scRNA_2021",
+                        gene.id.type = "ENSEMBL", 
+                        return.type = "GeneSetCollection")
+```
+
+# Custom gene sets
+```{r custom, eval=FALSE}
+# Load gene sets from GMT file
+gmt.file <- system.file("extdata/hsa_kegg_gs.gmt",
+                       package = "EnrichmentBrowser")
+gs <- getGenesets(gmt.file)     
+```
+
+

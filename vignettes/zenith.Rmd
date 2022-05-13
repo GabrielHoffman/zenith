@@ -4,11 +4,8 @@ author:
 - name: "[Gabriel Hoffman](http://gabrielhoffman.github.io)"
   affiliation: | 
     Icahn School of Medicine at Mount Sinai, New York
-
-abstract: >
-  Perform gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/10.1093/bioinformatics/btaa687) by considering the correlation between gene expression traits.  This package implements the [camera](https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/camera) method from the [limma](https://bioconductor.org/packages/limma/) package proposed by [Wu and Smyth (2012)](https://doi.org/10.1093/nar/gks461).  `zenith()` is a simple extension of `camera()` to be compatible with linear (mixed) models implemented in `dream()`.
 vignette: >
-  %\VignetteIndexEntry{Example usage of zenith on GEUVAIDIS RNA-seq}
+  %\VignetteIndexEntry{Example usage of zenith on RNA-seq}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
@@ -29,7 +26,6 @@ knitr::opts_chunk$set(
   tidy = FALSE,
   cache = TRUE)
 
-
 # rmarkdown::render("zenith.Rmd")
 
 
@@ -39,42 +35,66 @@ knitr::opts_chunk$set(
 
 ```
 
-# Loading gene sets
+`zenith` performs gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/10.1093/bioinformatics/btaa687) by considering the correlation between gene expression traits.  This package implements the [camera](https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/camera) method from the [limma](https://bioconductor.org/packages/limma/) package proposed by [Wu and Smyth (2012)](https://doi.org/10.1093/nar/gks461).  `zenith()` is a simple extension of `camera()` to be compatible with linear (mixed) models implemented in `dream()`.
 
-## Supported gene set databases
-[EnrichmentBrowser](https://bioconductor.org/packages/EnrichmentBrowser/) provides access to a range of gene set databases.  Here are some shortcuts to load common databases:  
 
-```{r load1, eval=FALSE}
+# Standard workflow
+```{r standard, fig.width=4}
+# Load packages
 library(zenith)
+library(edgeR)
+library(variancePartition)
+library(tweeDEseqCountData)
+library(kableExtra)
 
-# MSigDB
-gs.msigdb = get_MSigDB()
+# Load RNA-seq data from LCL's
+data(pickrell)
 
-# Gene Ontology
-gs.go = get_GeneOntology()
+# Filter genes
+# Note this is low coverage data, so just use as code example
+dsgn = model.matrix(~ gender, pData(pickrell.eset))
+keep = filterByExpr(exprs(pickrell.eset), dsgn, min.count=5)
+
+# Compute library size normalization
+dge = DGEList(counts = exprs(pickrell.eset)[keep,])
+dge = calcNormFactors(dge)
+
+# Estimate precision weights using voom
+vobj = voomWithDreamWeights(dge, ~ gender, pData(pickrell.eset))
+
+# Apply dream analysis
+fit = dream(vobj, ~ gender, pData(pickrell.eset))
+fit = eBayes(fit)
+
+# Load get_MSigDB database, Hallmark genes
+# use gene 'SYMBOL', or 'ENSEMBL' id
+# use get_GeneOntology() to load Gene Ontology
+go.gs = get_MSigDB("H", to="ENSEMBL")
+   
+# Run zenith analysis, and specific which coefficient to evaluate
+res.gsa = zenith_gsa(fit, go.gs, 'gendermale', progressbar=FALSE )
+
+# Show top gene sets: head(res.gsa)
+kable_styling(kable(head(res.gsa), row.names=FALSE))
+
+# for each cell type select 3 genesets with largest t-statistic
+# and 1 geneset with the lowest
+# Grey boxes indicate the gene set could not be evaluted because
+#    to few genes were represented
+plotZenithResults(res.gsa)
 ```
 
-For more detailed control including alternate gene identifiers (i.e. ENSEMBL, ENTREZ) or species (i.e. hsa, mmu)
 
-```{r load2, eval=FALSE}
-library(EnrichmentBrowser)
 
-# KEGG
-gs.kegg = getGenesets(  org = "hsa", 
-              db = "kegg", 
-              gene.id.type = "ENSEMBL", 
-              return.type = "GeneSetCollection")
 
-## ENRICHR resource
-df = showAvailableCollections( org = "hsa", db = "enrichr")
-
-# Allen_Brain_Atlas_10x_scRNA_2021
-gs.allen = getGenesets(  org = "hsa", 
-              db = "enrichr", 
-              lib = "Allen_Brain_Atlas_10x_scRNA_2021",
-              gene.id.type = "ENSEMBL", 
-              return.type = "GeneSetCollection")
+```{r exit, cache=FALSE, echo=FALSE}
+knitr::knit_exit()
 ```
+
+
+
+
+
 
 
 

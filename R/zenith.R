@@ -125,14 +125,14 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
   # setup progressbar
   if( progressbar ){
     # since time is quadratic in the size of the gene set
-    total_work = sum(sapply(index, length)^2)
+    total_work = sum(vapply(index, length, numeric(1))^2)
 
     pb <- progress_bar$new(
       format = " [:bar] :percent eta: :eta",
       clear = FALSE,
       total = total_work, width = 60)
   }
-  cumulative_work = cumsum(sapply(index, length)^2)
+  cumulative_work = cumsum(vapply(index, length, numeric(1))^2)
 
   # tab <- matrix(0,nsets,5)
   # rownames(tab) <- names(index)

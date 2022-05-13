@@ -28,7 +28,7 @@ This function loads the GO gene sets using the packages \code{EnrichmentBrowser}
 }
 \examples{
 # load GO Biological Process
-gs = get_GeneOntology('BP')
+# gs = get_GeneOntology('BP')
 
 # load all gene sets
 # gs = get_GeneOntology()
