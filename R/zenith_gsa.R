@@ -24,17 +24,6 @@
 #' @references{
 #' \insertAllCited{}
 #' }
-#' @rdname zenith_gsa-methods
-#' @export
-#' @seealso \code{limma::camera}
-setGeneric('zenith_gsa', function(fit, geneSets, coefs, use.ranks=FALSE, n_genes_min = 10, inter.gene.cor=0.01, progressbar=TRUE,...){
-	standardGeneric("zenith_gsa")
-	})
-
-
-
-
-
 #' @examples
 #' # Load packages
 #' library(edgeR)
@@ -76,6 +65,17 @@ setGeneric('zenith_gsa', function(fit, geneSets, coefs, use.ranks=FALSE, n_genes
 #' # Grey boxes indicate the gene set could not be evaluted because
 #' #    to few genes were represented
 #' plotZenithResults(res.gsa)
+#' @rdname zenith_gsa-methods
+#' @export
+#' @seealso \code{limma::camera}
+setGeneric('zenith_gsa', function(fit, geneSets, coefs, use.ranks=FALSE, n_genes_min = 10, inter.gene.cor=0.01, progressbar=TRUE,...){
+	standardGeneric("zenith_gsa")
+	})
+
+
+
+
+
 #' 
 #' @importFrom limma ids2indices
 #' @importFrom stats p.adjust
