@@ -95,7 +95,6 @@ head(res.gsa, 2)
 # Grey boxes indicate the gene set could not be evaluted because
 #    to few genes were represented
 plotZenithResults(res.gsa)
-
 }
 \references{
 {

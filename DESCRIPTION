@@ -1,13 +1,12 @@
 Package: zenith
 Type: Package
 Title: Gene set analysis following differential expression using linear (mixed) modeling with dream
-Version: 0.99.2
-Date: 2022-05-17
+Version: 0.99.3
+Date: 2022-05-20
 Authors@R: person("Gabriel", "Hoffman", role=c("aut", "cre"), email="gabriel.hoffman@mssm.edu")
-Maintainer: Gabriel E. Hoffman <gabriel.hoffman@mssm.edu>
-Description: Zenith performs gene set analysis on the result of differential expression using linear (mixed) modeling with dream by considering the correlation between gene expression traits.  This package implements the camera method from the limma package proposed by Wu and Smyth (2012).  zenith is a simple extension of camera to be compatible with linear mixed models implemented in variancePartition::dream().
+Description: Zenith performs gene set analysis on the result of differential expression using linear (mixed) modeling with dream by considering the correlation between gene expression traits.  This package implements the camera method from the limma package proposed by Wu and Smyth (2012).  Zenith is a simple extension of camera to be compatible with linear mixed models implemented in variancePartition::dream().
 VignetteBuilder: knitr
-License: GPL (>= 2)
+License: Artistic-2.0
 URL: https://DiseaseNeuroGenomics.github.io/zenith
 BugReports: https://github.com/DiseaseNeuroGenomics/zenith/issues
 Suggests:
@@ -36,7 +35,7 @@ biocViews:
     ImmunoOncology,
     Software
 Depends:
-    R (>= 4.1.0),
+    R (>= 4.2.0),
     methods
 Imports:
     variancePartition (>= 1.20.0),
