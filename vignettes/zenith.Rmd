@@ -84,8 +84,8 @@ kable_styling(kable(head(res.gsa), row.names=FALSE))
 plotZenithResults(res.gsa)
 ```
 
-#### `sessionInfo()` 
-```{r session}
+# Session Info
+```{r session, echo=FALSE}
 sessionInfo()
 ```
 
