@@ -57,7 +57,8 @@
 #' index2 <- 21:40
 #' 
 #' # perform differential expression analysis with dream
-#' fit = dream(y, ~ Age + (1|Group), info)
+#' fit = dream(y, ~ Age + Group, info)
+#' fit = eBayes(fit)
 #' 
 #' # perform gene set analysis testing Age
 #' res = zenith(fit, "Age", list(set1=index1,set2=index2) )

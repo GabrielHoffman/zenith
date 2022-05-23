@@ -49,13 +49,13 @@
 #' fit = dream(vobj, ~ gender, pData(pickrell.eset))
 #' fit = eBayes(fit)
 #' 
-#' # Load Gene Ontology database 
+#' # Load Hallmark genes from MSigDB
 #' # use gene 'SYMBOL', or 'ENSEMBL' id
-#' # use get_MSigDB() to load MSigDB
-#' go.gs = get_GeneOntology("BP", to="ENSEMBL")
+#' # use get_GeneOntology() to load Gene Ontology
+#' gs = get_MSigDB("H", to="ENSEMBL")
 #'    
 #' # Run zenith analysis
-#' res.gsa = zenith_gsa(fit, go.gs, 'gendermale', progressbar=FALSE )
+#' res.gsa = zenith_gsa(fit, gs, 'gendermale', progressbar=FALSE )
 #' 
 #' # Show top gene sets
 #' head(res.gsa, 2)

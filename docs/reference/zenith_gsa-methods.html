@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">zenith</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,7 +120,7 @@
 <em>Nucleic acids research</em>, <b>43</b>(7), e47--e47.<br><br> Wu D, Smyth GK (2012).
 “Camera: a competitive gene set test accounting for inter-gene correlation.”
 <em>Nucleic acids research</em>, <b>40</b>(17), e133.
-<a href="https://doi.org/10.1093/nar/gks461" class="external-link">doi:10.1093/nar/gks461</a>
+doi: <a href="https://doi.org/10.1093/nar/gks461" class="external-link">10.1093/nar/gks461</a>
 .</p>
     </div>
     <div class="section level2">
@@ -157,43 +157,31 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> User can apply eBayes() afterwards...</span>
 <span class="r-in"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># Load Gene Ontology database </span></span>
+<span class="r-in"><span class="co"># Load Hallmark genes from MSigDB</span></span>
 <span class="r-in"><span class="co"># use gene 'SYMBOL', or 'ENSEMBL' id</span></span>
-<span class="r-in"><span class="co"># use get_MSigDB() to load MSigDB</span></span>
-<span class="r-in"><span class="va">go.gs</span> <span class="op">=</span> <span class="fu"><a href="get_GeneOntology.html">get_GeneOntology</a></span><span class="op">(</span><span class="st">"BP"</span>, to<span class="op">=</span><span class="st">"ENSEMBL"</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># use get_GeneOntology() to load Gene Ontology</span></span>
+<span class="r-in"><span class="va">gs</span> <span class="op">=</span> <span class="fu"><a href="get_MSigDB.html">get_MSigDB</a></span><span class="op">(</span><span class="st">"H"</span>, to<span class="op">=</span><span class="st">"ENSEMBL"</span><span class="op">)</span></span>
 <span class="r-in">   </span>
 <span class="r-in"><span class="co"># Run zenith analysis</span></span>
-<span class="r-in"><span class="va">res.gsa</span> <span class="op">=</span> <span class="fu">zenith_gsa</span><span class="op">(</span><span class="va">fit</span>, <span class="va">go.gs</span>, <span class="st">'gendermale'</span>, progressbar<span class="op">=</span><span class="cn">FALSE</span> <span class="op">)</span></span>
+<span class="r-in"><span class="va">res.gsa</span> <span class="op">=</span> <span class="fu">zenith_gsa</span><span class="op">(</span><span class="va">fit</span>, <span class="va">gs</span>, <span class="st">'gendermale'</span>, progressbar<span class="op">=</span><span class="cn">FALSE</span> <span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Show top gene sets</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res.gsa</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    coef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                       gendermale</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process gendermale</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                   Geneset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                                             GO0031297: replication fork processing</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process GO0046889: positive regulation of lipid biosynthetic process</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                              NGenes Correlation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                           17        0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process     28        0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                   delta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                        1.2078869</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process -0.9484467</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                     se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                       0.3128694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process 0.2552151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    p.less</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                       0.9998714472</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process 0.0002073278</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                 p.greater</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                       0.0001285528</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process 0.9997926722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    PValue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                       0.0002571055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process 0.0004146557</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                              Direction      FDR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0031297: replication fork processing                              Up 0.274598</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GO0046889: positive regulation of lipid biosynthetic process      Down 0.274598</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              coef</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5890_HALLMARK_TNFA_SIGNALING_VIA_NFKB gendermale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5892_HALLMARK_CHOLESTEROL_HOMEOSTASIS gendermale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                       Geneset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5890_HALLMARK_TNFA_SIGNALING_VIA_NFKB M5890_HALLMARK_TNFA_SIGNALING_VIA_NFKB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5892_HALLMARK_CHOLESTEROL_HOMEOSTASIS M5892_HALLMARK_CHOLESTEROL_HOMEOSTASIS</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        NGenes Correlation     delta        se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5890_HALLMARK_TNFA_SIGNALING_VIA_NFKB    119        0.01 -1.001965 0.1618263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5892_HALLMARK_CHOLESTEROL_HOMEOSTASIS     37        0.01 -1.091536 0.2296170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              p.less p.greater       PValue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5890_HALLMARK_TNFA_SIGNALING_VIA_NFKB 2.053663e-08 1.0000000 4.107327e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5892_HALLMARK_CHOLESTEROL_HOMEOSTASIS 5.493684e-06 0.9999945 1.098737e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        Direction          FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5890_HALLMARK_TNFA_SIGNALING_VIA_NFKB      Down 1.930444e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M5892_HALLMARK_CHOLESTEROL_HOMEOSTASIS      Down 2.582032e-04</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># for each cell type select 3 genesets with largest t-statistic</span></span>
 <span class="r-in"><span class="co"># and 1 geneset with the lowest</span></span>
@@ -208,11 +196,13 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="http://gabrielhoffman.github.io" class="external-link">Gabriel Hoffman</a>.</p>
+  <p></p><p>Developed by <a href="http://gabrielhoffman.github.io" class="external-link">Gabriel
+Hoffman</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
     </footer></div>
