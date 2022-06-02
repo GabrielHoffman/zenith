@@ -35,7 +35,7 @@ biocViews:
     ImmunoOncology,
     Software
 Depends:
-    R (>= 4.2.0),
+    R (>= 4.1.0),
     methods
 Imports:
     variancePartition (>= 1.20.0),
