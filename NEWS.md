@@ -1,3 +1,6 @@
+# zenith 0.99.6
+ - add `plotZenithResults_gg()`
+
 # zenith 0.99.2
  - fix documentation
  - add `zenith_gsa()`
