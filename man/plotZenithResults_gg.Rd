@@ -10,7 +10,8 @@ plotZenithResults_gg(
   nbottom = 5,
   label.angle = 45,
   zmax = NULL,
-  transpose = FALSE
+  transpose = FALSE,
+  sortByGeneset = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ plotZenithResults_gg(
 \item{ntop}{number of gene sets with highest t-statistic to show}
 
 \item{nbottom}{number of gene sets with lowest t-statistic to show}
+
+\item{sortByGeneset}{use hierarchical clustering to sort gene sets. Default is TRUE}
 }
 \value{
 Heatmap showing enrichment for gene sets and cell types

@@ -158,6 +158,7 @@ plotZenithResults = function(df, ntop=5, nbottom=5){
 #' @param df result \code{data.frame} from \link{zenith_gsa}
 #' @param ntop number of gene sets with highest t-statistic to show
 #' @param nbottom number of gene sets with lowest t-statistic to show
+#' @param sortByGeneset use hierarchical clustering to sort gene sets. Default is TRUE
 #' 
 #' @return Heatmap showing enrichment for gene sets and cell types
 #' 
@@ -208,7 +209,7 @@ plotZenithResults = function(df, ntop=5, nbottom=5){
 #' @importFrom stats hclust dist
 #' 
 #' @export
-plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL, transpose=FALSE){
+plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL, transpose=FALSE, sortByGeneset = TRUE){
 
 	delta = se = PValue = tstat = assay = FDR = Geneset = NULL 
 	
@@ -272,7 +273,10 @@ plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL
 
 	# ggplot2 version
 	data = df[df$Geneset %in% gs,]
-	data$Geneset = factor(data$Geneset, hcl2$labels[hcl2$order])
+	if( sortByGeneset ){
+		data$Geneset = factor(data$Geneset, hcl2$labels[hcl2$order])
+	}
+	
 	data$assay = factor(data$assay, rev(unique(data$assay)))
 
 	if( is.null(zmax) ){
