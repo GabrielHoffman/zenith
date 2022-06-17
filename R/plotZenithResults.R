@@ -286,7 +286,7 @@ plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL
 	data$assay = factor(data$assay, rev(unique(data$assay)))
 
 	if( is.null(zmax) ){
-		zmax = max(abs(data$tstat))
+		zmax = max(abs(data$tstat), na.rm=TRUE)
 	}
 
 	ncol = length(unique(data$assay))
