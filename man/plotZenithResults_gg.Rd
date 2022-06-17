@@ -21,6 +21,12 @@ plotZenithResults_gg(
 
 \item{nbottom}{number of gene sets with lowest t-statistic to show}
 
+\item{label.angle}{angle of x-axis label}
+
+\item{zmax}{maxium of the color scales.  If not specified, used range of the observed t-statistics}
+
+\item{transpose}{transpose the axes of the plot}
+
 \item{sortByGeneset}{use hierarchical clustering to sort gene sets. Default is TRUE}
 }
 \value{

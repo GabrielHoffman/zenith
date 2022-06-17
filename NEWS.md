@@ -1,3 +1,6 @@
+# zenith 0.99.7
+ - update `plotZenithResults_gg()`
+
 # zenith 0.99.6
  - add `plotZenithResults_gg()`
 

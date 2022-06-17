@@ -158,6 +158,9 @@ plotZenithResults = function(df, ntop=5, nbottom=5){
 #' @param df result \code{data.frame} from \link{zenith_gsa}
 #' @param ntop number of gene sets with highest t-statistic to show
 #' @param nbottom number of gene sets with lowest t-statistic to show
+#' @param label.angle angle of x-axis label
+#' @param zmax maxium of the color scales.  If not specified, used range of the observed t-statistics
+#' @param transpose transpose the axes of the plot
 #' @param sortByGeneset use hierarchical clustering to sort gene sets. Default is TRUE
 #' 
 #' @return Heatmap showing enrichment for gene sets and cell types
@@ -207,6 +210,7 @@ plotZenithResults = function(df, ntop=5, nbottom=5){
 #' @import ggplot2
 #' @importFrom reshape2 dcast
 #' @importFrom stats hclust dist
+#' @importFrom tidyr complete
 #' 
 #' @export
 plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL, transpose=FALSE, sortByGeneset = TRUE){
@@ -273,6 +277,8 @@ plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL
 
 	# ggplot2 version
 	data = df[df$Geneset %in% gs,]
+	data = as.data.frame(complete(data, Geneset, assay))
+
 	if( sortByGeneset ){
 		data$Geneset = factor(data$Geneset, hcl2$labels[hcl2$order])
 	}
@@ -308,31 +314,6 @@ plotZenithResults_gg = function(df, ntop=5, nbottom=5, label.angle=45, zmax=NULL
 	}
 
 	fig
-
-
-	# # set breaks
-	# zmax = max(abs(M), na.rm=TRUE)
-	# at = seq(0, round(zmax), length.out=3)
-	# at = sort(unique(c(-at, at)))
-
-	# # set colors
-	# col_fun = colorRamp2(c(-zmax, 0, zmax), c("blue", "white", "red"))
-
-	# # create heatmap
-	# hm = Heatmap(t(M),
-	# 	        name = "t-statistic", #title of legend
-	# 	        # column_title = "assay", row_title = "Gene sets",
-	# 	        row_names_gp = gpar(fontsize = 8),
-	# 		    width = nrow(M), 
-	# 		    height = ncol(M),
-	# 		    cluster_rows = hcl2,
-	# 			# cluster_columns = hcl1,
-	# 		    column_split = annot$coef,
-	# 		    cluster_column_slices = FALSE,
-	# 		    heatmap_legend_param = list(at = at,  direction = "horizontal", title_position="topcenter"), 
-	# 		    col = col_fun)
-
-	# draw(hm, heatmap_legend_side = "bottom")
 }
 
 

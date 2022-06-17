@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">zenith</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,8 @@
   nbottom <span class="op">=</span> <span class="fl">5</span>,
   label.angle <span class="op">=</span> <span class="fl">45</span>,
   zmax <span class="op">=</span> <span class="cn">NULL</span>,
-  transpose <span class="op">=</span> <span class="cn">FALSE</span>
+  transpose <span class="op">=</span> <span class="cn">FALSE</span>,
+  sortByGeneset <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -78,6 +79,14 @@
 <dd><p>number of gene sets with highest t-statistic to show</p></dd>
 <dt>nbottom</dt>
 <dd><p>number of gene sets with lowest t-statistic to show</p></dd>
+<dt>label.angle</dt>
+<dd><p>angle of x-axis label</p></dd>
+<dt>zmax</dt>
+<dd><p>maxium of the color scales.  If not specified, used range of the observed t-statistics</p></dd>
+<dt>transpose</dt>
+<dd><p>transpose the axes of the plot</p></dd>
+<dt>sortByGeneset</dt>
+<dd><p>use hierarchical clustering to sort gene sets. Default is TRUE</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
