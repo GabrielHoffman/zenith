@@ -2,9 +2,17 @@
 % Please edit documentation in R/plotZenithResults.R
 \name{plotZenithResults}
 \alias{plotZenithResults}
-\title{Heatmap of zenith results}
+\title{Heatmap of zenith results using ggplot2}
 \usage{
-plotZenithResults(df, ntop = 5, nbottom = 5)
+plotZenithResults(
+  df,
+  ntop = 5,
+  nbottom = 5,
+  label.angle = 45,
+  zmax = NULL,
+  transpose = FALSE,
+  sortByGeneset = TRUE
+)
 }
 \arguments{
 \item{df}{result \code{data.frame} from \link{zenith_gsa}}
@@ -12,6 +20,14 @@ plotZenithResults(df, ntop = 5, nbottom = 5)
 \item{ntop}{number of gene sets with highest t-statistic to show}
 
 \item{nbottom}{number of gene sets with lowest t-statistic to show}
+
+\item{label.angle}{angle of x-axis label}
+
+\item{zmax}{maxium of the color scales.  If not specified, used range of the observed t-statistics}
+
+\item{transpose}{transpose the axes of the plot}
+
+\item{sortByGeneset}{use hierarchical clustering to sort gene sets. Default is TRUE}
 }
 \value{
 Heatmap showing enrichment for gene sets and cell types
