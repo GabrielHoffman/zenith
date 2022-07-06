@@ -25,21 +25,13 @@ knitr::opts_chunk$set(
   error = FALSE,
   tidy = FALSE,
   cache = TRUE)
-
-# rmarkdown::render("zenith.Rmd")
-
-
-# devtools::reload("/Users/gabrielhoffman/workspace/repos/zenith")
-
-# scp geuvadis.html sklar1:/hpc/users/hoffmg01/www/software/zenith
-
 ```
 
 `zenith` performs gene set analysis on the result of differential expression using linear (mixed) modeling with [dream](https://doi.org/10.1093/bioinformatics/btaa687) by considering the correlation between gene expression traits.  This package implements the [camera](https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/camera) method from the [limma](https://bioconductor.org/packages/limma/) package proposed by [Wu and Smyth (2012)](https://doi.org/10.1093/nar/gks461).  `zenith()` is a simple extension of `camera()` to be compatible with linear (mixed) models implemented in `dream()`.
 
 
 # Standard workflow
-```{r standard, fig.width=4}
+```{r standard}
 # Load packages
 library(zenith)
 library(edgeR)
@@ -49,34 +41,38 @@ library(kableExtra)
 
 # Load RNA-seq data from LCL's
 data(pickrell)
+geneCounts = exprs(pickrell.eset)
+df_metadata = pData(pickrell.eset)
 
 # Filter genes
 # Note this is low coverage data, so just use as code example
-dsgn = model.matrix(~ gender, pData(pickrell.eset))
-keep = filterByExpr(exprs(pickrell.eset), dsgn, min.count=5)
+dsgn = model.matrix(~ gender, df_metadata)
+keep = filterByExpr(geneCounts, dsgn, min.count=5)
 
 # Compute library size normalization
-dge = DGEList(counts = exprs(pickrell.eset)[keep,])
+dge = DGEList(counts = geneCounts[keep,])
 dge = calcNormFactors(dge)
 
 # Estimate precision weights using voom
-vobj = voomWithDreamWeights(dge, ~ gender, pData(pickrell.eset))
+vobj = voomWithDreamWeights(dge, ~ gender, df_metadata)
 
 # Apply dream analysis
-fit = dream(vobj, ~ gender, pData(pickrell.eset))
+fit = dream(vobj, ~ gender, df_metadata)
 fit = eBayes(fit)
 
 # Load get_MSigDB database, Hallmark genes
 # use gene 'SYMBOL', or 'ENSEMBL' id
 # use get_GeneOntology() to load Gene Ontology
-go.gs = get_MSigDB("H", to="ENSEMBL")
+msdb.gs = get_MSigDB("H", to="ENSEMBL")
    
 # Run zenith analysis, and specific which coefficient to evaluate
-res.gsa = zenith_gsa(fit, go.gs, 'gendermale', progressbar=FALSE )
+res.gsa = zenith_gsa(fit, msdb.gs, 'gendermale', progressbar=FALSE )
 
 # Show top gene sets: head(res.gsa)
 kable_styling(kable(head(res.gsa), row.names=FALSE))
+```
 
+```{r plots}
 # for each cell type select 3 genesets with largest t-statistic
 # and 1 geneset with the lowest
 # Grey boxes indicate the gene set could not be evaluted because
@@ -88,320 +84,6 @@ plotZenithResults(res.gsa)
 ```{r session, echo=FALSE}
 sessionInfo()
 ```
-
-```{r exit, cache=FALSE, echo=FALSE}
-knitr::knit_exit()
-```
-
-
-
-
-
-
-
-
-# Integration with dream
-
-
-## Load and process RNA-seq data
-```{r load, message=FALSE, cache=FALSE}
-library(recount)
-library(variancePartition)
-library(edgeR)
-library(limma)
-library(zenith)
-library(ggplot2)
-library(EnrichmentBrowser)
-library(GSEABase)
-library(dplyr)
-library(kableExtra)
-
-# For ENSEMBL id ENSG00000279457.4, return ENSG00000279457
-trim_ensembl_ids = function(x){
-  gsub("(.*)\\.(.*)", "\\1", x) 
-}
-```
-
-#### Load RNA-seq data and metadata
-```{r download}
-# Download GEUVADIS data from recount2
-if( ! file.exists("ERP001942/rse_gene.Rdata") ){
-  download_study('ERP001942')
-}
-
-# Load the data
-load(file.path('ERP001942', 'rse_gene.Rdata'))
-
-# scale counts
-rse <- scale_counts(rse_gene)
-
-# get count data
-geneCounts = assay(rse)
-
-# read and format metadata
-info = read.table("https://www.ebi.ac.uk/arrayexpress/files/E-GEUV-1/E-GEUV-1.sdrf.txt", header=TRUE, sep="\t")
-colnames(info) = gsub("Comment\\.", "", colnames(info))
-colnames(info) = gsub("Characteristics\\.", "", colnames(info))
-colnames(info) = gsub("\\.$", "", colnames(info))
-
-# extract unique samples and drop a problematic sample
-info = unique(info[,!colnames(info) %in% c('Scan.Name', 'SUBMITTED_FILE_NAME', 'FASTQ_URI')])
-info = info[info$ENA_RUN != 'ERR188328',]
-
-# merge sample information in colData(rse) and info
-metadata = merge(colData(rse), info, by.x="run", by.y='ENA_RUN')
-metadata = data.frame(metadata)
-rownames(metadata) = metadata$run
-
-# keep RNA-seq samples in metadata
-geneCounts = geneCounts[,colnames(geneCounts) %in% metadata$run]
-geneCounts = geneCounts[,match(metadata$run, colnames(geneCounts))]
-```
-
-#### RNA-seq processing
-```{r processing}
-# keep only expressed genes
-isexpr = rowSums(cpm(geneCounts)>1) >= 0.2*ncol(geneCounts)
-
-# apply TMM normalization
-dge = DGEList( geneCounts[isexpr,] )
-dge = calcNormFactors(dge)
-
-# Create log2 counts per million for plotting
-geneExpr = cpm(dge, log=TRUE)
-
-# extract gene annotations
-geneInfo = data.frame(rowData(rse))
-```
-
-#### Confirm sex based on expression
-Plot expression of XIST and UTY  
-We see a clear separation of sex based on XIST from chrX and UTY from chrY.
-```{r plot.sex, fig.height=5, fig.width=5}
-# extract ENSEMBL identifies for XIST and UTY
-ens_XIST = geneInfo$gene_id[which(geneInfo$symbol == "XIST")]
-ens_UTY = geneInfo$gene_id[which(geneInfo$symbol == "UTY")]
-
-df = data.frame(metadata, XIST= geneExpr[ens_XIST,],
-        UTY = geneExpr[ens_UTY,])
-
-ggplot(df, aes(XIST, UTY, color=sex)) + geom_point() + theme_bw() + theme(aspect.ratio=1) + scale_color_manual(values = c("red", "blue"))
-```
-
-
-
-#### Differential expression with `dream`
-```{r diffExpr, fig.height=5, fig.width=5}
-form = ~ sex + ancestry.category + laboratory
-vobj = voomWithDreamWeights(dge, form, metadata, plot=TRUE)
-
-fit = dream(vobj, form, metadata, computeResiduals=TRUE)
-fit = eBayes(fit)
-```
-
-#### Load genesets
-```{r load.genesets}
-# Load Gene Ontology database: only Molecular Function
-go.gs = get_GeneOntology("MF")
-   
-# convert from GeneSetCollection to list used by camera and zenith
-geneSets_GO = recodeToList( go.gs )
-```
-
-
-## Zenith gene set analysis
-```{r zenith}
-# Map from Ensembl genes in geneSets_GO to 
-# from trimmed Ensembl names from RNA-seq data 
-index = ids2indices( geneSets_GO, trim_ensembl_ids(rownames(fit)))
-   
-# filter by size of gene set
-n_genes_in = 10
-index = index[sapply(index, length) >= n_genes_in]
-
-# Run camera
-dsgn = model.matrix( form, metadata)
-res_camera = camera( vobj, index, dsgn, inter.gene.cor=NA, contrast="sexmale")
-
-# Run zenith.  
-# Note that zenith allows analysis of any dream model and 
-# any coefficient or contrast defined in the model. 
-# Setting inter.gene.cor=NA estimates the correlation from the model
-res_zenith = zenith( fit, "sexmale", index, inter.gene.cor=NA)
-```
-
-### Compare camera and zenith
-
-#### Results from camera
-```{r ktable.camera}
-res_camera[1:8,] %>% kable %>% kable_styling(full_width = FALSE) 
-```
-
-#### Results from zenith
-```{r kable.zenith}
-res_zenith[1:8,] %>% kable %>% kable_styling(full_width = FALSE)     
-```
-
-While there is a very slight difference in the results from the methods, this is attributable to the very slight difference in the correlation value computed.  This appears to be due to an numerical issue with `camera`, but values are correct to two digits.   
-```{r compare, fig.height=5, fig.width=5}
-df = merge(res_camera, res_zenith, by="row.names")
-plot(df$Correlation.x, df$Correlation.y, xlab="Correlation from zenith", ylab="Correlation from camera")
-abline(0, 1, col="red")
-```
-
-
-## Analysis with MSigDB
-#### Load [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) and perform zenith analysis
-```{r MSigDB, eval=FALSE}
-gs_msigdb = get_MSigDB()
-
-# Map from Ensembl genes in gs_msigdb to 
-# from trimmed Ensembl names from RNA-seq data 
-index = ids2indices( recodeToList(gs_msigdb), trim_ensembl_ids(rownames(fit)))
-
-# filter by size of gene set
-n_genes_in = 10
-index = index[sapply(index, length) >= n_genes_in]
-
- # zenith analysis of MSigDB using square test statistics
-res_zenith_msigdb = zenith( fit, "sexmale", index)
-```
-
-```{r kable.zenith_squared.msigdb, eval=FALSE, echo=FALSE}
-res_zenith_msigdb[1:20,] %>% kable %>% kable_styling(full_width = FALSE)  
-```
-
-
-```{r, cache=FALSE, echo=FALSE}
-knitr::knit_exit()
-```
-
-#### Zenith controls the false positive rate 
-```{r testnull}
-
-set.seed(1)
-# simulate random variable
-metadata$rnd = rnorm(nrow(metadata))
-
-# fit dream model
-form = ~ sex + ancestry.category + laboratory + rnd
-
-fit = dream(vobj, form, metadata, computeResiduals=TRUE)
-fit = eBayes(fit)
-
-# fit zenith model, testing the coefficent "rnd"
-res_zenith = zenith( fit, "rnd", index)
-
-# fit zenith model for squared statistics, testing the coefficent "rnd"
-res_zenith_sq = zenith( fit, "rnd", index, squaredStats=TRUE)
-```
-
-index = lapply( 1:2000, function(x){
-  sample.int(nrow(fit), 100)
-  })
-names(index) = paste0("gs_", 1:length(index))
-
-res1 = zenith( fit, "rnd", index, use.ranks=FALSE, allow.neg.cor=TRUE)
-
-# fit zenith model for squared statistics, testing the coefficent "rnd"
-res2 = zenith( fit, "rnd", index, squaredStats=TRUE, use.ranks=FALSE, allow.neg.cor=TRUE)
-
-res3 = cameraPR( topTable(fit, "rnd", sort.by="none", number=Inf)$t, index, inter.gene.cor=0.2)
-
-sum(res1$PValue < 0.05) / nrow(res1)
-sum(res2$PValue < 0.05) / nrow(res2)
-sum(res3$PValue < 0.05) / nrow(res3)
-
-
-par(mfrow=c(1,4))
-hist(res1$Correlation)
-hist(res1$PValue)
-hist(res1$p.less)
-hist(res1$p.greater)
-
-
-hist(res2$Correlation)
-hist(res2$PValue)
-hist(res2$p.less)
-hist(res2$p.greater)
-
-
-# hist(res2$delta) 
-hist(res3$PValue, main="CameraPR")
-hist( 2*pmin(res2[names(index),]$p.less, res2[names(index),]$p.greater), main="Two sided zenith" )
-
-
-plot(res3[names(index),]$PValue, 2*pmin(res2[names(index),]$p.less, res2[names(index),]$p.greater))
-
-
-cameraPR( topTable(fit, "rnd", sort.by="none", number=Inf)$t^2, index[760], inter.gene.cor=0.002167243)
-
-Stat = topTable(fit, "rnd", sort.by="none", number=Inf)$t
-
-res = lapply( index, function(iset){
-  zenith:::.rankSumTestWithCorrelation(iset, statistics=Stat^2, correlation=0.8, df=Inf)
-})
-res = do.call(rbind, res)
-
-
-hist(res$less)
-hist(res$greater)
-
-
-
-I have show that 
-1) zenith controls the false positive rate under the null when using random variable in the dream model
-2) You can see in the vignette that the squareStats give much more findings that the up/down analysis: https://hoffmg01.u.hpc.mssm.edu/software/zenith/geuvadis.html
-
-3) The p-values are uniform, when variable is random and there is no correlation structure in the data
-
-
-In my testing experience, t^2 is succesptible to outliers driving the association.
-  I can use abs(t) instead while still using rho^2 to approximate the correlation
-
-# devtools::reload("/Users/gabrielhoffman/workspace/repos/zenith")
-
-
-
-with use.rank = TRUE, statistic is always conservative
-  But centered around 0.5 as corr -> 1
-
-with use.rank = FALSE, delta is affected by outliers and is not symmetric
-  can I used abs(t) instead? since it is less prone to outliers
-
-  if tstats are correlated rho, how are abs(tstats) correlated?
-
-
-library(mvtnorm)
-
-df = lapply(seq(0, 1, length.out=1000), function(rho){
-  C = matrix(rho, 2,2)
-  diag(C) = 1
-  X = rmvnorm(10000, sigma=C)
-
-  data.frame(rho, 
-    rho_hat = cor(X[,1], X[,2]), 
-    rho_sq = cor(X[,1]^2, X[,2]^2), 
-    rho_abs = cor(abs(X[,1]), abs(X[,2])))
-})
-df = do.call(rbind, df)
-
-par(mfrow=c(1,4))
-plot(df$rho, df$rho_hat)
-plot(df$rho, df$rho_sq)
-plot(df$rho, df$rho_abs)
-plot(df$rho_sq, df$rho_abs)
-abline(0, 1, col="red", lwd='2')
-
-rho = seq(0, 1, length.out=1000)
-plot(rho, rho^2 )
-
-
-
-
-
-
-
 
 
 

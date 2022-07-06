@@ -1,3 +1,6 @@
+# zenith 0.99.9
+ - Update to address issues from https://github.com/Bioconductor/Contributions/issues/2630#issuecomment-1171369001
+
 # zenith 0.99.8
  - `plotZenithResults()` as default
 

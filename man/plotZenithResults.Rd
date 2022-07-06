@@ -43,21 +43,23 @@ library(tweeDEseqCountData)
 
 # Load RNA-seq data from LCL's
 data(pickrell)
+geneCounts = exprs(pickrell.eset)
+df_metadata = pData(pickrell.eset)
 
 # Filter genes
 # Note this is low coverage data, so just use as code example
-dsgn = model.matrix(~ gender, pData(pickrell.eset))
-keep = filterByExpr(exprs(pickrell.eset), dsgn, min.count=5)
+dsgn = model.matrix(~ gender, df_metadata)
+keep = filterByExpr(geneCounts, dsgn, min.count=5)
 
 # Compute library size normalization
-dge = DGEList(counts = exprs(pickrell.eset)[keep,])
+dge = DGEList(counts = geneCounts[keep,])
 dge = calcNormFactors(dge)
 
 # Estimate precision weights using voom
-vobj = voomWithDreamWeights(dge, ~ gender, pData(pickrell.eset))
+vobj = voomWithDreamWeights(dge, ~ gender, df_metadata)
 
 # Apply dream analysis
-fit = dream(vobj, ~ gender, pData(pickrell.eset))
+fit = dream(vobj, ~ gender,df_metadata)
 fit = eBayes(fit)
 
 # Load Hallmark genes from MSigDB
