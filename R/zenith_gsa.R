@@ -81,6 +81,7 @@ setGeneric('zenith_gsa', function(fit, geneSets, coefs, use.ranks=FALSE, n_genes
 #' 
 #' @importFrom limma ids2indices
 #' @importFrom stats p.adjust
+#' @importFrom GSEABase geneIds
 #'
 #' @rdname zenith_gsa-methods
 #' @aliases zenith_gsa,MArrayLM,GeneSetCollection,ANY-method
@@ -89,7 +90,7 @@ setMethod("zenith_gsa", signature(fit="MArrayLM", geneSets = "GeneSetCollection"
 	function(fit, geneSets, coefs, use.ranks=FALSE, n_genes_min = 10, inter.gene.cor=0.01, progressbar=TRUE,...){
 
 	# convert GeneSetCollection to list
-	geneSets.lst = recodeToList( geneSets )
+	geneSets.lst = geneIds( geneSets )
 
 	# Map from genes to gene sets
 	index = ids2indices( geneSets.lst, rownames(fit))

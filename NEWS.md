@@ -1,3 +1,6 @@
+# zenith 0.99.10
+ - replace `recodeToList()` since this functionality already exists
+    
 # zenith 0.99.9
  - Update to address issues from https://github.com/Bioconductor/Contributions/issues/2630#issuecomment-1171369001
 
