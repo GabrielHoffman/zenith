@@ -1,3 +1,6 @@
+# zenith 0.99.12
+ - update dependencies
+    
 # zenith 0.99.10
  - replace `recodeToList()` since this functionality already exists
     
