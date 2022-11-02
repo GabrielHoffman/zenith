@@ -1,3 +1,6 @@
+# zenith 0.99.13
+ - fix bug in degrees of freedom for `zenith()` null
+
 # zenith 0.99.12
  - update dependencies
     
