@@ -106,11 +106,14 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
       Stat <- zscoreT( Stat, df=df, approx=TRUE, method="hill")
     }
 
+    G = length( Stat )
+
     df.camera <- min(fit$df.residual[1], G - 2L)
   }else if( fit$method == "lmer"){
     # extract test statistics
     Stat = topTable(fit, coef, number=Inf, sort.by="none")$z.std
 
+    G = length( Stat )
 
     df.camera <- min(mean(fit$df.residual[,coef]), G - 2L)
 
@@ -119,9 +122,7 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
   }
 
   # get number of statistics
-  G = length( Stat )
-  ID = rownames(fit)
-  
+  ID = rownames(fit)  
 
   # Global statistics
   meanStat <- mean(Stat)
