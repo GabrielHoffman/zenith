@@ -13,5 +13,5 @@
 devtools::install_github("DiseaseNeuroGenomics/zenith")
 ```
 
-<sub><sub>May 13, 2022</sub></sub>
+<sub><sub>Nov 2, 2022</sub></sub>
 

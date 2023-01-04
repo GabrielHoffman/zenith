@@ -38,7 +38,6 @@
 #' }
 #'
 #' @examples
-#' 
 #' library(variancePartition)
 #' 
 #' # simulate meta-data
@@ -106,18 +105,24 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
       df = fit$df.total[1]
       Stat <- zscoreT( Stat, df=df, approx=TRUE, method="hill")
     }
+
+    G = length( Stat )
+
+    df.camera <- min(fit$df.residual[1], G - 2L)
   }else if( fit$method == "lmer"){
     # extract test statistics
     Stat = topTable(fit, coef, number=Inf, sort.by="none")$z.std
+
+    G = length( Stat )
+
+    df.camera <- min(mean(fit$df.residual[,coef]), G - 2L)
+
   }else{
     stop("Model method must be either 'ls' or 'lmer'")
   }
 
   # get number of statistics
-  G = length( Stat )
-  ID = rownames(fit)
-  
-  df.camera <- min(fit$df.residual[1], G - 2L)
+  ID = rownames(fit)  
 
   # Global statistics
   meanStat <- mean(Stat)

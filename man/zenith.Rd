@@ -51,7 +51,6 @@ Perform gene set analysis on the result of differential expression using linear 
 For differential expression with dream using linear (mixed) models see Hoffman and Roussos (2020).  For the original camera gene set test see Wu and Smyth (2012).
 }
 \examples{
-
 library(variancePartition)
 
 # simulate meta-data
