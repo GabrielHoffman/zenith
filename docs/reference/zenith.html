@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">zenith</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,20 +154,18 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># perform differential expression analysis with dream</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="http://gabrielhoffman.github.io/variancePartition/reference/dream-method.html" class="external-link">dream</a></span><span class="op">(</span><span class="va">y</span>, <span class="op">~</span> <span class="va">Age</span> <span class="op">+</span> <span class="va">Group</span>, <span class="va">info</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Fixed effect model, using limma directly...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> User can apply eBayes() afterwards...</span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># perform gene set analysis testing Age</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">=</span> <span class="fu">zenith</span><span class="op">(</span><span class="va">fit</span>, <span class="st">"Age"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>set1<span class="op">=</span><span class="va">index1</span>,set2<span class="op">=</span><span class="va">index2</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      NGenes Correlation       delta        se    p.less p.greater    PValue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set1     20        0.01 -0.31702347 0.2452507 0.1433435 0.8566565 0.2866870</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set2     20        0.01  0.06212293 0.2454848 0.5917149 0.4082851 0.8165701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      NGenes Correlation       delta        se    p.less  p.greater    PValue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set2     20        0.01  0.42026878 0.2433466 0.9086930 0.09130701 0.1826140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set1     20        0.01 -0.02764083 0.2437757 0.4584432 0.54155683 0.9168863</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Direction       FDR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set1      Down 0.5733741</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> set2        Up 0.8165701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set2        Up 0.3652281</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> set1      Down 0.9168863</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

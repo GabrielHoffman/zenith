@@ -1,8 +1,8 @@
 Package: zenith
 Type: Package
 Title: Gene set analysis following differential expression using linear (mixed) modeling with dream
-Version: 1.0.1
-Date: 2023-01-04
+Version: 1.0.2
+Date: 2023-03-08
 Authors@R: person("Gabriel", "Hoffman", role=c("aut", "cre"), email="gabriel.hoffman@mssm.edu")
 Description: Zenith performs gene set analysis on the result of differential expression using linear (mixed) modeling with dream by considering the correlation between gene expression traits.  This package implements the camera method from the limma package proposed by Wu and Smyth (2012).  Zenith is a simple extension of camera to be compatible with linear mixed models implemented in variancePartition::dream().
 VignetteBuilder: knitr
@@ -54,4 +54,4 @@ Imports:
     Rdpack,
     stats
 RdMacros: Rdpack
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
