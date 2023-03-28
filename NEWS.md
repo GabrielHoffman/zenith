@@ -1,7 +1,10 @@
+# zenith 1.1.1
+ - fix warnings
+
 # zenith 1.0.2
  - add `zenithPR_gsa()`
 
- # zenith 1.0.1
+# zenith 1.0.1
  - fixes to Bioconductor
 
 # zenith 0.99.13
