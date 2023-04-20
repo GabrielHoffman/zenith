@@ -1,3 +1,7 @@
+# zenith 1.1.2
+ - April 20, 2023
+ - fix warnings for limma
+
 # zenith 1.1.1
  - fix warnings
 
