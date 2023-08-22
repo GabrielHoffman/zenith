@@ -7,7 +7,8 @@
 get_GeneOntology(
   onto = c("BP", "MF", "CC"),
   to = "ENSEMBL",
-  includeOffspring = TRUE
+  includeOffspring = TRUE,
+  org = "hsa"
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_GeneOntology(
 \item{to}{convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types}
 
 \item{includeOffspring}{if TRUE, follow the GO hierarchy down and include all genes in offspring sets for a given gene set}
+
+\item{org}{organism.  human ('hsa'), mouse ('mmu')}
 }
 \value{
 Gene sets stored as GeneSetCollection

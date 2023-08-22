@@ -7,6 +7,7 @@
 #' @param onto array of categories to load
 #' @param to convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types
 #' @param includeOffspring if TRUE, follow the GO hierarchy down and include all genes in offspring sets for a given gene set
+#' @param org organism.  human ('hsa'), mouse ('mmu')
 #'
 #' @details
 #' This function loads the GO gene sets using the packages \code{EnrichmentBrowser} and \code{GO.db}  It can take a mintute to load because converting gene name type is slow.   
@@ -21,10 +22,10 @@
 #' 
 #' @import EnrichmentBrowser GSEABase
 #' @export
-get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL', includeOffspring=TRUE ){
+get_GeneOntology = function( onto = c("BP", "MF", "CC"), to = 'ENSEMBL', includeOffspring=TRUE, org="hsa" ){
 
 	gs.list = lapply( onto, function(x){
-		getGenesets(org="hsa", db="go", gene.id.type = to, return.type='GeneSetCollection', onto=x, hierarchical=includeOffspring)
+		getGenesets(org=org, db="go", gene.id.type = to, return.type='GeneSetCollection', onto=x, hierarchical=includeOffspring)
 		})
 
 	# combine gene sets and convert to GeneSetCollection

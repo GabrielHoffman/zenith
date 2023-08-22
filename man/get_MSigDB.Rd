@@ -4,12 +4,18 @@
 \alias{get_MSigDB}
 \title{Load MSigDB genesets}
 \usage{
-get_MSigDB(cat = unique(msigdbr_collections()$gs_cat), to = "ENSEMBL")
+get_MSigDB(
+  cat = unique(msigdbr_collections()$gs_cat),
+  to = "ENSEMBL",
+  org = "hsa"
+)
 }
 \arguments{
 \item{cat}{array of categories to load.  Defaults to array of all MSigDB categories}
 
 \item{to}{convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types}
+
+\item{org}{organism.  human ('hsa'), mouse ('mmu')}
 }
 \value{
 Gene sets stored as GeneSetCollection

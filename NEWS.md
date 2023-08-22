@@ -1,3 +1,6 @@
+# zenith 1.3.1
+ - user can specify organism
+
 # zenith 1.1.2
  - April 20, 2023
  - fix warnings for limma
