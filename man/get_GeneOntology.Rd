@@ -18,7 +18,7 @@ get_GeneOntology(
 
 \item{includeOffspring}{if TRUE, follow the GO hierarchy down and include all genes in offspring sets for a given gene set}
 
-\item{org}{organism.  human ('hsa'), mouse ('mmu')}
+\item{org}{organism.  human (\code{'hsa'}), mouse (\code{'mmu'}), etc}
 }
 \value{
 Gene sets stored as GeneSetCollection

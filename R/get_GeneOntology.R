@@ -7,7 +7,7 @@
 #' @param onto array of categories to load
 #' @param to convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types
 #' @param includeOffspring if TRUE, follow the GO hierarchy down and include all genes in offspring sets for a given gene set
-#' @param org organism.  human ('hsa'), mouse ('mmu')
+#' @param org organism.  human (\code{'hsa'}), mouse (\code{'mmu'}), etc
 #'
 #' @details
 #' This function loads the GO gene sets using the packages \code{EnrichmentBrowser} and \code{GO.db}  It can take a mintute to load because converting gene name type is slow.   

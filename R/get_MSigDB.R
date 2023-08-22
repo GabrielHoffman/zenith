@@ -5,7 +5,7 @@
 #'
 #' @param cat array of categories to load.  Defaults to array of all MSigDB categories
 #' @param to convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types
-#' @param org organism.  human ('hsa'), mouse ('mmu')
+#' @param org organism.  human (\code{'hsa'}), mouse (\code{'mmu'}), etc
 #'
 #' @details
 #' This function loads the MSigDB gene sets using the packages \code{EnrichmentBrowser} and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.   

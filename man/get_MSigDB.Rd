@@ -15,7 +15,7 @@ get_MSigDB(
 
 \item{to}{convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types}
 
-\item{org}{organism.  human ('hsa'), mouse ('mmu')}
+\item{org}{organism.  human (\code{'hsa'}), mouse (\code{'mmu'}), etc}
 }
 \value{
 Gene sets stored as GeneSetCollection
