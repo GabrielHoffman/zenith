@@ -79,7 +79,11 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
     stop("fit must be result of dream(..., computeResiduals=TRUE)")
   }
 
-  if( ! (coef %in% colnames(coef(fit))) ){
+  if( length(coef) > 1 ){
+    stop("zenith doesn't currently support multiple coefs")
+  }
+
+  if( any(!(coef %in% colnames(coef(fit)))) ){
     stop("coef must be in colnames(coef(fit))")
   }
 
@@ -100,7 +104,8 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
   if( fit$method == "ls" ){
 
     # extract test statistics
-    Stat = topTable(fit, coef, number=Inf, sort.by="none")$t
+    tab = topTable(fit, coef, number=Inf, sort.by="none")
+    Stat = tab$t
 
     if( ! use.ranks ){
       df = fit$df.total[1]
@@ -112,7 +117,8 @@ zenith <- function( fit, coef, index, use.ranks=FALSE, allow.neg.cor=FALSE, prog
     df.camera <- min(fit$df.residual[1], G - 2L)
   }else if( fit$method == "lmer"){
     # extract test statistics
-    Stat = topTable(fit, coef, number=Inf, sort.by="none")$z.std
+    tab = topTable(fit, coef, number=Inf, sort.by="none")
+    Stat = tab$z.std
 
     G = length( Stat )
 

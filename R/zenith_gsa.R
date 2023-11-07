@@ -10,7 +10,7 @@
 #'
 #' @param fit results from \code{dream()}
 #' @param geneSets \code{GeneSetCollection} 
-#' @param coefs coefficients to test using \code{topTable(fit, coef=coefs[i])}
+#' @param coefs list of coefficients to test using \code{topTable(fit, coef=coefs[[i]])}
 #' @param use.ranks do a rank-based test \code{TRUE} or a parametric test \code{FALSE}? default: FALSE
 #' @param n_genes_min minumum number of genes in a geneset
 #' @param inter.gene.cor if NA, estimate correlation from data.  Otherwise, use specified value
@@ -89,6 +89,11 @@ setGeneric('zenith_gsa', function(fit, geneSets, coefs, use.ranks=FALSE, n_genes
 setMethod("zenith_gsa", signature(fit="MArrayLM", geneSets = "GeneSetCollection", coefs="ANY"),
 	function(fit, geneSets, coefs, use.ranks=FALSE, n_genes_min = 10, inter.gene.cor=0.01, progressbar=TRUE,...){
 
+	if( is.vector(coefs) ){
+		coefs = list(coefs)
+		names(coefs) = "coefLst1"
+	}
+
 	# convert GeneSetCollection to list
 	geneSets.lst = geneIds( geneSets )
 
@@ -109,7 +114,6 @@ setMethod("zenith_gsa", signature(fit="MArrayLM", geneSets = "GeneSetCollection"
 	
 	df_zenith
 })
-
 
 
 

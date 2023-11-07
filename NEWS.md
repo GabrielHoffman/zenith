@@ -1,3 +1,6 @@
+# zenith 1.5.1
+ - throw error when zenith is run on multiple coefs
+
 # zenith 1.3.1
  - user can specify organism
 
