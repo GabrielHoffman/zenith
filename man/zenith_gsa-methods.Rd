@@ -33,7 +33,7 @@ zenith_gsa(
 
 \item{geneSets}{\code{GeneSetCollection}}
 
-\item{coefs}{coefficients to test using \code{topTable(fit, coef=coefs[i])}}
+\item{coefs}{list of coefficients to test using \code{topTable(fit, coef=coefs[[i]])}}
 
 \item{use.ranks}{do a rank-based test \code{TRUE} or a parametric test \code{FALSE}? default: FALSE}
 

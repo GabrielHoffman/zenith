@@ -1,3 +1,7 @@
+# zenith 1.5.2
+ - Feb 2, 2024
+ - resolve issue with renameing gene sets when multiple coefs are used
+
 # zenith 1.5.1
  - throw error when zenith is run on multiple coefs
 

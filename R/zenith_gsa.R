@@ -89,9 +89,9 @@ setGeneric('zenith_gsa', function(fit, geneSets, coefs, use.ranks=FALSE, n_genes
 setMethod("zenith_gsa", signature(fit="MArrayLM", geneSets = "GeneSetCollection", coefs="ANY"),
 	function(fit, geneSets, coefs, use.ranks=FALSE, n_genes_min = 10, inter.gene.cor=0.01, progressbar=TRUE,...){
 
-	if( is.vector(coefs) ){
-		coefs = list(coefs)
-		names(coefs) = "coefLst1"
+	if( length(coefs) > 1){
+		coefs = lapply(coefs, function(x) x)
+		names(coefs) = paste("coefLst", seq(length(coefs)), sep='')
 	}
 
 	# convert GeneSetCollection to list
