@@ -27,7 +27,6 @@
 #'   \item \code{PValue}:  p-value for hypothesis test \code{H0: delta != 0}
 #'   \item \code{Direction}: direction of effect based on sign(delta)
 #'   \item \code{FDR}: false discovery rate based on Benjamini-Hochberg method in \code{p.adjust}
-#'   \item \code{coef.name}: name for pre-computed test statistics. Default: \code{zenithPR}
 #' }
 #'
 #' @seealso \code{zenith_gsa()}
@@ -35,7 +34,7 @@
 #' @importFrom stats runif
 #'
 #' @export
-zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_min = 10, progressbar=TRUE, inter.gene.cor = 0.01, coef.name = "zenithPR"){
+zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_min = 10, progressbar=TRUE, inter.gene.cor = 0.01){
 
 	if( length(statistics) != length(ids) ){
 		stop("statsitics and ids must be the same length")
@@ -142,10 +141,6 @@ zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_mi
 	# Sort by p-value
 	o <- order(tab$PValue)
 	tab <- tab[o,]
-
-	# Make results compatible with plotZenithResults
-	tab$Geneset <- rownames(tab)
-	tab$coef <- coef.name
 
 	tab
 }
