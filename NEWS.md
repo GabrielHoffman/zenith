@@ -1,4 +1,8 @@
-# zenith 1.5.2
+# zenith 1.5.3
+ - March 8, 2024
+ - add `coef` to `zenithPR_gsa()`
+
+ # zenith 1.5.2
  - Feb 2, 2024
  - resolve issue with renameing gene sets when multiple coefs are used
 

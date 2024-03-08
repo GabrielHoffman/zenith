@@ -12,6 +12,3 @@
 # Install package and dependencies
 devtools::install_github("DiseaseNeuroGenomics/zenith")
 ```
-
-<sub><sub>Nov 2, 2022</sub></sub>
-

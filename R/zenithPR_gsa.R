@@ -12,6 +12,7 @@
 #' @param n_genes_min minumum number of genes in a geneset
 #' @param progressbar if TRUE, show progress bar
 #' @param inter.gene.cor correlation of test statistics with in gene set
+#' @param coef.name name of column to store test statistic
 #'
 #' @details
 #' This is the same as \code{zenith_gsa()}, but uses pre-computed test statistics.  Note that \code{zenithPR_gsa()} may give slightly different results for small samples sizes, if \code{zenithPR_gsa()} is fed t-statistics instead of z-statistics.
@@ -27,14 +28,53 @@
 #'   \item \code{PValue}:  p-value for hypothesis test \code{H0: delta != 0}
 #'   \item \code{Direction}: direction of effect based on sign(delta)
 #'   \item \code{FDR}: false discovery rate based on Benjamini-Hochberg method in \code{p.adjust}
+#'   \item \code{coef.name}: name for pre-computed test statistics. Default: \code{zenithPR}
 #' }
+#'#' @details This code adapts the widely used \code{camera()} analysis \insertCite{wu2012camera}{zenith} in the \code{limma} package \insertCite{ritchie2015limma}{zenith} to the case of linear (mixed) models used by \code{variancePartition::dream()}.
 #'
-#' @seealso \code{zenith_gsa()}
+#' @examples
+#' # Load packages
+#' library(edgeR)
+#' library(variancePartition)
+#' library(tweeDEseqCountData)
+#' 
+#' # Load RNA-seq data from LCL's
+#' data(pickrell)
+#' geneCounts = exprs(pickrell.eset)
+#' df_metadata = pData(pickrell.eset)
+#' 
+#' # Filter genes
+#' # Note this is low coverage data, so just use as code example
+#' dsgn = model.matrix(~ gender, df_metadata)
+#' keep = filterByExpr(geneCounts, dsgn, min.count=5)
+#' 
+#' # Compute library size normalization
+#' dge = DGEList(counts = geneCounts[keep,])
+#' dge = calcNormFactors(dge)
+#' 
+#' # Estimate precision weights using voom
+#' vobj = voomWithDreamWeights(dge, ~ gender, df_metadata)
+#' 
+#' # Apply dream analysis
+#' fit = dream(vobj, ~ gender, df_metadata)
+#' fit = eBayes(fit)
+#' 
+#' # Load Hallmark genes from MSigDB
+#' # use gene 'SYMBOL', or 'ENSEMBL' id
+#' # use get_GeneOntology() to load Gene Ontology
+#' gs = get_MSigDB("H", to="ENSEMBL")
+#'    
+#' # Run zenithPR analysis with a test statistic for each gene
+#' tab = topTable(fit, coef='gendermale', number=Inf)
+#' 	
+#' res.gsa = zenithPR_gsa(tab$t, rownames(tab), gs)
+#
+#' @seealso \code{zenith_gsa()}, \code{limma::cameraPR()}
 #' @importFrom Rdpack reprompt 
 #' @importFrom stats runif
 #'
 #' @export
-zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_min = 10, progressbar=TRUE, inter.gene.cor = 0.01){
+zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_min = 10, progressbar=TRUE, inter.gene.cor = 0.01, coef.name = "zenithPR"){
 
 	if( length(statistics) != length(ids) ){
 		stop("statsitics and ids must be the same length")
@@ -141,6 +181,10 @@ zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_mi
 	# Sort by p-value
 	o <- order(tab$PValue)
 	tab <- tab[o,]
+
+	# Make results compatible with plotZenithResults
+	tab$Geneset <- rownames(tab)
+	tab$coef <- coef.name
 
 	tab
 }

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">zenith</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,8 @@
 <span>  use.ranks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  n_genes_min <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  progressbar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  inter.gene.cor <span class="op">=</span> <span class="fl">0.01</span></span>
+<span>  inter.gene.cor <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  coef.name <span class="op">=</span> <span class="st">"zenithPR"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -100,6 +101,10 @@
 <dt>inter.gene.cor</dt>
 <dd><p>correlation of test statistics with in gene set</p></dd>
 
+
+<dt>coef.name</dt>
+<dd><p>name of column to store test statistic</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -114,16 +119,83 @@
 <li><p><code>PValue</code>:  p-value for hypothesis test <code>H0: delta != 0</code></p></li>
 <li><p><code>Direction</code>: direction of effect based on sign(delta)</p></li>
 <li><p><code>FDR</code>: false discovery rate based on Benjamini-Hochberg method in <code>p.adjust</code></p></li>
-</ul></div>
+<li><p><code>coef.name</code>: name for pre-computed test statistics. Default: <code>zenithPR</code></p></li>
+</ul><p>#' @details This code adapts the widely used <code><a href="https://rdrr.io/pkg/limma/man/camera.html" class="external-link">camera()</a></code> analysis (Wu and Smyth 2012)
+ in the <code>limma</code> package (Ritchie et al. 2015)
+ to the case of linear (mixed) models used by <code><a href="http://DiseaseNeurogenomics.github.io/variancePartition/reference/dream-method.html" class="external-link">variancePartition::dream()</a></code>.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This is the same as <code><a href="zenith_gsa-methods.html">zenith_gsa()</a></code>, but uses pre-computed test statistics.  Note that <code>zenithPR_gsa()</code> may give slightly different results for small samples sizes, if <code>zenithPR_gsa()</code> is fed t-statistics instead of z-statistics.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="zenith_gsa-methods.html">zenith_gsa()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="zenith_gsa-methods.html">zenith_gsa()</a></code>, <code><a href="https://rdrr.io/pkg/limma/man/camera.html" class="external-link">limma::cameraPR()</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load packages</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/edgeR/" class="external-link">edgeR</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/variancePartition" class="external-link">variancePartition</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.creal.cat/jrgonzalez/software.htm" class="external-link">tweeDEseqCountData</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘BiocGenerics’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:limma’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     plotMA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to Bioconductor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Vignettes contain introductory material; view with</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load RNA-seq data from LCL's</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pickrell</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">geneCounts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">pickrell.eset</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_metadata</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html" class="external-link">pData</a></span><span class="op">(</span><span class="va">pickrell.eset</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Filter genes</span></span></span>
+<span class="r-in"><span><span class="co"># Note this is low coverage data, so just use as code example</span></span></span>
+<span class="r-in"><span><span class="va">dsgn</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">gender</span>, <span class="va">df_metadata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">keep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/filterByExpr.html" class="external-link">filterByExpr</a></span><span class="op">(</span><span class="va">geneCounts</span>, <span class="va">dsgn</span>, min.count<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compute library size normalization</span></span></span>
+<span class="r-in"><span><span class="va">dge</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/DGEList.html" class="external-link">DGEList</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">geneCounts</span><span class="op">[</span><span class="va">keep</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dge</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/calcNormFactors.html" class="external-link">calcNormFactors</a></span><span class="op">(</span><span class="va">dge</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Estimate precision weights using voom</span></span></span>
+<span class="r-in"><span><span class="va">vobj</span> <span class="op">=</span> <span class="fu"><a href="http://DiseaseNeurogenomics.github.io/variancePartition/reference/voomWithDreamWeights.html" class="external-link">voomWithDreamWeights</a></span><span class="op">(</span><span class="va">dge</span>, <span class="op">~</span> <span class="va">gender</span>, <span class="va">df_metadata</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Apply dream analysis</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="http://DiseaseNeurogenomics.github.io/variancePartition/reference/dream-method.html" class="external-link">dream</a></span><span class="op">(</span><span class="va">vobj</span>, <span class="op">~</span> <span class="va">gender</span>, <span class="va">df_metadata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load Hallmark genes from MSigDB</span></span></span>
+<span class="r-in"><span><span class="co"># use gene 'SYMBOL', or 'ENSEMBL' id</span></span></span>
+<span class="r-in"><span><span class="co"># use get_GeneOntology() to load Gene Ontology</span></span></span>
+<span class="r-in"><span><span class="va">gs</span> <span class="op">=</span> <span class="fu"><a href="get_MSigDB.html">get_MSigDB</a></span><span class="op">(</span><span class="st">"H"</span>, to<span class="op">=</span><span class="st">"ENSEMBL"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached version from 2024-03-08 18:44:35</span>
+<span class="r-in"><span>   </span></span>
+<span class="r-in"><span><span class="co"># Run zenithPR analysis with a test statistic for each gene</span></span></span>
+<span class="r-in"><span><span class="va">tab</span> <span class="op">=</span> <span class="fu">topTable</span><span class="op">(</span><span class="va">fit</span>, coef<span class="op">=</span><span class="st">'gendermale'</span>, number<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="va">res.gsa</span> <span class="op">=</span> <span class="fu">zenithPR_gsa</span><span class="op">(</span><span class="va">tab</span><span class="op">$</span><span class="va">t</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, <span class="va">gs</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
