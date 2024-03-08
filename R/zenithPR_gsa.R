@@ -142,5 +142,9 @@ zenithPR_gsa = function(statistics, ids, geneSets, use.ranks = FALSE, n_genes_mi
 	o <- order(tab$PValue)
 	tab <- tab[o,]
 
+	# Make results compatible with plotZenithResults
+	tab$Geneset <- rownames(tab)
+	tab$coef <- "zenithPR"
+
 	tab
 }
