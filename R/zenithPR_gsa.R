@@ -30,7 +30,6 @@
 #'   \item \code{FDR}: false discovery rate based on Benjamini-Hochberg method in \code{p.adjust}
 #'   \item \code{coef.name}: name for pre-computed test statistics. Default: \code{zenithPR}
 #' }
-#'#' @details This code adapts the widely used \code{camera()} analysis \insertCite{wu2012camera}{zenith} in the \code{limma} package \insertCite{ritchie2015limma}{zenith} to the case of linear (mixed) models used by \code{variancePartition::dream()}.
 #'
 #' @examples
 #' # Load packages

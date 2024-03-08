@@ -45,7 +45,6 @@ zenithPR_gsa(
   \item \code{FDR}: false discovery rate based on Benjamini-Hochberg method in \code{p.adjust}
   \item \code{coef.name}: name for pre-computed test statistics. Default: \code{zenithPR}
 }
-#' @details This code adapts the widely used \code{camera()} analysis \insertCite{wu2012camera}{zenith} in the \code{limma} package \insertCite{ritchie2015limma}{zenith} to the case of linear (mixed) models used by \code{variancePartition::dream()}.
 }
 \description{
 Perform gene set analysis on the result of a pre-computed test statistic.  Test whether statistics in a gene set are larger/smaller than statistics not in the set.
