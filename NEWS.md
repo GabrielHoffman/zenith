@@ -1,3 +1,9 @@
+# zenith 1.8.1
+ - March 19, 2025
+ - fix `get_MSigDB()` to handle change to `msigdbr`
+  - now use `msigdbdf`
+
+
 # zenith 1.5.3
  - March 8, 2024
  - add `coef` to `zenithPR_gsa()`

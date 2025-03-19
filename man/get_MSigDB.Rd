@@ -5,17 +5,17 @@
 \title{Load MSigDB genesets}
 \usage{
 get_MSigDB(
-  cat = unique(msigdbr_collections()$gs_cat),
-  to = "ENSEMBL",
-  org = "hsa"
+  cat,
+  to = c("ENSEMBL", "SYMBOL", "ENTREZ"),
+  organism = c("HS", "MM")
 )
 }
 \arguments{
-\item{cat}{array of categories to load.  Defaults to array of all MSigDB categories}
+\item{cat}{array of categories to load.}
 
-\item{to}{convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types}
+\item{to}{return genes names as \code{'ENSEMBL'} or \code{'SYMBOL'}}
 
-\item{org}{organism.  human (\code{'hsa'}), mouse (\code{'mmu'}), etc}
+\item{organism}{organism: human (\code{'HS'}) or mouse (\code{'MS'})}
 }
 \value{
 Gene sets stored as GeneSetCollection
@@ -24,7 +24,7 @@ Gene sets stored as GeneSetCollection
 Load MSigDB genesets
 }
 \details{
-This function loads the MSigDB gene sets using the packages \code{EnrichmentBrowser} and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.
+This function loads the MSigDB gene sets using the packages  and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.
 }
 \examples{
 # load Hallmark gene sets

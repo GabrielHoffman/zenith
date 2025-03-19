@@ -3,12 +3,12 @@
 #'
 #' Load MSigDB genesets
 #'
-#' @param cat array of categories to load.  Defaults to array of all MSigDB categories
-#' @param to convert gene names to this type using \code{EnrichmentBrowser::idMap()}.  See \code{EnrichmentBrowser::idTypes(org="hsa")} for valid types
-#' @param org organism.  human (\code{'hsa'}), mouse (\code{'mmu'}), etc
+#' @param cat array of categories to load.  
+#' @param to return genes names as \code{'ENSEMBL'} or \code{'SYMBOL'}
+#' @param organism organism: human (\code{'HS'}) or mouse (\code{'MS'})
 #'
 #' @details
-#' This function loads the MSigDB gene sets using the packages \code{EnrichmentBrowser} and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.   
+#' This function loads the MSigDB gene sets using the packages  and \code{msigdbr}.  It can take a mintute to load because converting gene name type is slow.   
 #'
 #' @return Gene sets stored as GeneSetCollection
 #' @examples
@@ -18,18 +18,68 @@
 #' # load all gene sets
 #' # gs = get_MSigDB()
 #' 
-#' @import EnrichmentBrowser GSEABase msigdbr
+#' @importFrom GSEABase GeneSet BroadCollection ENSEMBLIdentifier SymbolIdentifier EntrezIdentifier
+#' @importFrom dplyr `%>%`
 #' @export
-get_MSigDB = function(cat = unique(msigdbr_collections()$gs_cat), to = "ENSEMBL", org="hsa"){
+get_MSigDB = function(cat, to = c("ENSEMBL", "SYMBOL", "ENTREZ"), organism = c("HS", "MM")){
 
-	gs.list = lapply( cat, function(x){
-		# get gene sets and convert to gene.id.type "to"
-		getGenesets(org=org, db="msigdb", gene.id.type = to, return.type='GeneSetCollection', cat=x, subcat=NA)
-	})
+	to <- match.arg(to)
+	organism <- match.arg(organism)
 
-	# combine gene sets and convert to GeneSetCollection
+	cats = c("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H")
+	if( ! all(cat %in% cats) ){
+		stop("cat is not valid")
+	}
+
+	switch(to, 
+		"ENSEMBL" = {	
+			geneKey <- "db_ensembl_gene"
+			geneIdType <- ENSEMBLIdentifier()
+			},
+		"SYMBOL" = {			
+			geneKey <- "db_gene_symbol"
+			geneIdType <- SymbolIdentifier()
+			},
+		"ENTREZ" = {
+			geneKey <- "db_ncbi_gene"
+			geneIdType <- EntrezIdentifier()
+			})		
+
+	requireNamespace("msigdbdf", quietly=TRUE)
+	if( ! isNamespaceLoaded("msigdbdf") ){
+		txt = "Please run the following command to install the 'msigdbdf' package:\ninstall.packages('msigdbdf', repos = 'https://igordot.r-universe.dev')"
+		stop(txt)
+	}
+
+	# pass R CMD check
+	gs_name <- gs_collection <- NULL
+
+	# filter by category
+	df1 <- msigdbdf::msigdbdf(organism) %>%
+			dplyr::filter(gs_collection %in% cat) 
+
+	# loop thru gene sets
+	gs.list <- lapply( unique(df1$gs_name), function(ID){
+
+		df2 <- df1 %>%
+			dplyr::filter(gs_name == ID)
+
+		# create gene set
+		GeneSet(geneIds = unique(df2[[geneKey]]),
+			setName = ID,
+			shortDescription = df2$gs_description[1],
+			organism = organism,
+			geneIdType = geneIdType, 
+			collectionType = BroadCollection(tolower(cat), df2$gs_subcollection[1]))
+		})
+	# combine gene sets into GeneSetCollection
 	GeneSetCollection( do.call(c, gs.list ) )
 }
+
+
+
+
+
 
 
 

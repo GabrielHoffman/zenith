@@ -18,11 +18,10 @@
 #'
 #' For differential expression with dream using linear (mixed) models see Hoffman and Roussos (2020).  For the original camera gene set test see Wu and Smyth (2012).
 #' 
-#' @references{
-#'   \insertRef{hoffman2020dream}{zenith}
+#' @references
+#' Hoffman, G. E., & Roussos, P. (2021). Dream: powerful differential expression analysis for repeated measures designs. Bioinformatics, 37(2), 192-201.
 #' 
-#'   \insertRef{wu2012camera}{zenith}
-#' }
+#' Wu, Di, and Gordon K. Smyth. "Camera: a competitive gene set test accounting for inter-gene correlation." Nucleic acids research 40.17 (2012): e133-e133.
 #'
 #' @return
 #' \itemize{

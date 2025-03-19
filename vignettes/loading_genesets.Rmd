@@ -101,3 +101,8 @@ gs <- getGenesets(gmt.file)
 ```
 
 
+# Session Info
+```{r session, echo=FALSE}
+sessionInfo()
+```
+

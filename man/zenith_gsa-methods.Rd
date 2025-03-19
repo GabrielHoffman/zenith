@@ -52,7 +52,7 @@ zenith_gsa(
 Perform a competitive gene set analysis accounting for correlation between genes.
 }
 \details{
-This code adapts the widely used \code{camera()} analysis \insertCite{wu2012camera}{zenith} in the \code{limma} package \insertCite{ritchie2015limma}{zenith} to the case of linear (mixed) models used by \code{variancePartition::dream()}.
+This code adapts the widely used \code{camera()} analysis (Wu and Smyth, 2012) in the \code{limma} package (Ritchie, et al. 2015) to the case of linear (mixed) models used by \code{variancePartition::dream()}.
 }
 \examples{
 # Load packages
@@ -99,9 +99,9 @@ head(res.gsa, 2)
 plotZenithResults(res.gsa)
 }
 \references{
-{
-\insertAllCited{}
-}
+Wu, Di, and Gordon K. Smyth. "Camera: a competitive gene set test accounting for inter-gene correlation." Nucleic acids research 40.17 (2012): e133-e133.
+
+Ritchie, M. E., Phipson, B., Wu, D. I., Hu, Y., Law, C. W., Shi, W., & Smyth, G. K. (2015). limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic acids research, 43(7), e47-e47.
 }
 \seealso{
 \code{limma::camera}

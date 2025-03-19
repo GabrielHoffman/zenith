@@ -79,9 +79,7 @@ head(res)
 
 }
 \references{
-{
-  \insertRef{hoffman2020dream}{zenith}
+Hoffman, G. E., & Roussos, P. (2021). Dream: powerful differential expression analysis for repeated measures designs. Bioinformatics, 37(2), 192-201.
 
-  \insertRef{wu2012camera}{zenith}
-}
+Wu, Di, and Gordon K. Smyth. "Camera: a competitive gene set test accounting for inter-gene correlation." Nucleic acids research 40.17 (2012): e133-e133.
 }
