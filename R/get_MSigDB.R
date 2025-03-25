@@ -19,14 +19,23 @@
 #' # gs = get_MSigDB()
 #' 
 #' @importFrom GSEABase GeneSet BroadCollection ENSEMBLIdentifier SymbolIdentifier EntrezIdentifier
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr `%>%` bind_rows
+#' @importFrom msigdbr msigdbr
 #' @export
 get_MSigDB = function(cat, to = c("ENSEMBL", "SYMBOL", "ENTREZ"), organism = c("HS", "MM")){
 
 	to <- match.arg(to)
 	organism <- match.arg(organism)
 
-	cats = c("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H")
+	species <- switch(organism, 
+						HS = "Homo sapiens",
+						MM = "Mus musculus")
+
+	cats <- c("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H")
+	if( missing(cat) ){
+		cat <- cats
+	}
+
 	if( ! all(cat %in% cats) ){
 		stop("cat is not valid")
 	}
@@ -45,18 +54,21 @@ get_MSigDB = function(cat, to = c("ENSEMBL", "SYMBOL", "ENTREZ"), organism = c("
 			geneIdType <- EntrezIdentifier()
 			})		
 
-	requireNamespace("msigdbdf", quietly=TRUE)
-	if( ! isNamespaceLoaded("msigdbdf") ){
-		txt = "Please run the following command to install the 'msigdbdf' package:\ninstall.packages('msigdbdf', repos = 'https://igordot.r-universe.dev')"
-		stop(txt)
-	}
-
 	# pass R CMD check
 	gs_name <- gs_collection <- NULL
 
+	if( ! requireNamespace("msigdbdf", quietly = TRUE) ){
+		txt <- "! Please run the following command to install the 'msigdbdf' package:\ninstall.packages('msigdbdf', repos = 'https://igordot.r-universe.dev')"
+		warning(txt)
+	}
+
 	# filter by category
-	df1 <- msigdbdf::msigdbdf(organism) %>%
-			dplyr::filter(gs_collection %in% cat) 
+	df1 <- lapply(cat, function(x){
+		msigdbr(species = species, 
+				db_species = organism,
+				collection = x)		
+		})
+	df1 <- bind_rows(df1)
 
 	# loop thru gene sets
 	gs.list <- lapply( unique(df1$gs_name), function(ID){
@@ -70,7 +82,7 @@ get_MSigDB = function(cat, to = c("ENSEMBL", "SYMBOL", "ENTREZ"), organism = c("
 			shortDescription = df2$gs_description[1],
 			organism = organism,
 			geneIdType = geneIdType, 
-			collectionType = BroadCollection(tolower(cat), df2$gs_subcollection[1]))
+			collectionType = BroadCollection(tolower(unique(df2$gs_collection)), df2$gs_subcollection[1]))
 		})
 	# combine gene sets into GeneSetCollection
 	GeneSetCollection( do.call(c, gs.list ) )
